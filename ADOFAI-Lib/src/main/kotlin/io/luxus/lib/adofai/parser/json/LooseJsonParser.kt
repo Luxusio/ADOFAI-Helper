@@ -37,10 +37,6 @@ class LooseJsonParser(inputStream: InputStream) {
     }
 
     private fun processStartObjectOrArray(c: Char): JsonToken {
-        if (hasPrevObject && keyMode) {
-            sb.append(',')
-        }
-
         val isStartArray = c == '['
         isListStack.push(isStartArray)
 
@@ -71,14 +67,9 @@ class LooseJsonParser(inputStream: InputStream) {
     }
 
     private fun processStringKeyOrValue(c: Char): JsonToken {
-        if (hasPrevObject && (keyMode || isListStack.peek())) {
-            sb.append(',')
-        }
         var escape = false
-        sb.append(c)
         while (reader.hasNext()) {
             val strC: Char = reader.next()
-            sb.append(strC)
             escape = if (strC == '\\') {
                 !escape
             } else if (!escape && strC == '"') {
@@ -97,14 +88,12 @@ class LooseJsonParser(inputStream: InputStream) {
             } else {
                 false
             }
+            sb.append(strC)
         }
         throw AssertionError()
     }
 
     private fun processValue(c: Char): JsonToken {
-        if (hasPrevObject && (keyMode || isListStack.peek())) {
-            sb.append(',')
-        }
         sb.append(c)
         while (hasNextChar()) {
             val valC: Char = nextChar()
@@ -123,11 +112,11 @@ class LooseJsonParser(inputStream: InputStream) {
     fun nextToken(): JsonToken? {
         while (hasNextChar()) {
             val c: Char = nextChar()
+            sb.setLength(0) // fastest way to clear stringBuilder
             if (c == '{' || c == '[') {
                 return processStartObjectOrArray(c)
             } else if (c == ':') {
                 keyMode = false
-                sb.append(c)
             } else if (c == '}' || c == ']') {
                 return processEndObjectOrArray(c)
             } else if (c == '"') {
@@ -140,8 +129,6 @@ class LooseJsonParser(inputStream: InputStream) {
         return null
     }
 
-//    fun value(): String {
-//        Triple
-//    }
+    fun value(): String = sb.toString()
 
 }

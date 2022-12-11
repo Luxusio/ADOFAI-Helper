@@ -64,4 +64,36 @@ class LooseJsonParserTest {
         )
     }
 
+    @Test
+    fun `nextToken with value should return valid value`() {
+        // given
+        val parser = LooseJsonParser(invalidJsonString.byteInputStream())
+
+        // when
+        val values = mutableListOf<String>()
+        while (true) {
+            parser.nextToken() ?: break
+            values.add(parser.value())
+        }
+
+        // then
+        values shouldContainExactly listOf(
+            "{",
+            "key",
+            "[",
+            "{",
+            "name",
+            "a",
+            "age",
+            "1",
+            "}",
+            "{",
+            "}",
+            "]",
+            "a",
+            "2",
+            "}"
+        )
+    }
+
 }
