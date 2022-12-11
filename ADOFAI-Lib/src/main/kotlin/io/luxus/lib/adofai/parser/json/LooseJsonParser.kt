@@ -2,6 +2,7 @@ package io.luxus.lib.adofai.parser.json
 
 import io.luxus.lib.adofai.util.StringReader
 import java.io.InputStream
+import java.lang.IllegalArgumentException
 import java.util.*
 
 
@@ -52,8 +53,11 @@ class LooseJsonParser(inputStream: InputStream) {
     }
 
     private fun processEndObjectOrArray(c: Char): JsonToken {
-        // todo : throw exception if met } with endArray or ] with no endArray
         val isEndArray = isListStack.pop()
+        val isEndArrayChar = c == ']'
+        if (isEndArray != isEndArrayChar) {
+            throw IllegalArgumentException("invalid end character (expected=${if (isEndArray) "]" else "}"} real=$c)")
+        }
 
         hasPrevObject = true
         keyMode = true
@@ -66,7 +70,7 @@ class LooseJsonParser(inputStream: InputStream) {
         }
     }
 
-    private fun processStringKeyOrValue(c: Char): JsonToken {
+    private fun processStringKeyOrValue(): JsonToken {
         var escape = false
         while (reader.hasNext()) {
             val strC: Char = reader.next()
@@ -120,7 +124,7 @@ class LooseJsonParser(inputStream: InputStream) {
             } else if (c == '}' || c == ']') {
                 return processEndObjectOrArray(c)
             } else if (c == '"') {
-                return processStringKeyOrValue(c)
+                return processStringKeyOrValue()
             } else if (c != ',' && c != ' ' && c != '\t' && c != '\n') {
                 return processValue(c)
             }

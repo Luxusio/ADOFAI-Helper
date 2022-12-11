@@ -5,6 +5,9 @@ import io.kotest.matchers.shouldNotBe
 import io.luxus.lib.adofai.parser.json.JsonToken
 import io.luxus.lib.adofai.parser.json.LooseJsonParser
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 class LooseJsonParserTest {
 
@@ -94,6 +97,23 @@ class LooseJsonParserTest {
             "2",
             "}"
         )
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = [
+        "{]", "[}"
+    ])
+    fun `read with invalid closing character should throw exception`(value: String) {
+        // given
+        // value
+        val parser = LooseJsonParser(value.byteInputStream())
+
+        // when & then
+        assertThrows<IllegalArgumentException> {
+            while (true) {
+                parser.nextToken() ?: break
+            }
+        }
     }
 
 }
