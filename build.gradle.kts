@@ -16,13 +16,14 @@ repositories {
 
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(17)
         withJava()
     }
     sourceSets {
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(project(":ADOFAI-Lib"))
             }
         }
         val jvmTest by getting
