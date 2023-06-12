@@ -2,22 +2,13 @@ package io.luxus.adofai.lib.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.data.forAll
-import io.kotest.data.headers
-import io.kotest.data.row
-import io.kotest.data.table
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.luxus.adofai.lib.util.adofaiFiles
+import io.luxus.adofai.lib.util.forAllAdofaiFiles
 import java.io.InputStreamReader
 
 class AdofaiJsonInputStreamTest : BehaviorSpec({
-    forAll(
-        table(
-            headers("file"),
-            adofaiFiles().map { row(it) }
-        )
-    ) { file ->
+    forAllAdofaiFiles { file ->
         Given("ADOFAI File") {
             When("read as AdofaiJsonInputStream") {
                 val inputStream = AdofaiJsonInputStream(file.inputStream())
