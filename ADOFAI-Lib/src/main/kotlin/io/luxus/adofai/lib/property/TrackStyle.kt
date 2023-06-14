@@ -8,4 +8,5 @@ enum class TrackStyle(override val jsonValue: String) : JsonParseable {
     NEON_LIGHT("NeonLight"),
     BASIC("Basic"),
     GEMS("Gems"),
+    MINIMAL("Minimal"),
 }

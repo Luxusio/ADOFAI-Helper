@@ -8,6 +8,7 @@ class MoveTrack private constructor(
     active: Boolean?,
     val startTile: Pair<Long, TilePosition>,
     val endTile: Pair<Long, TilePosition>,
+    val gapLength: Long,
     val duration: Double,
     val positionOffset: Pair<Double, Double>,
     val rotationOffset: Double?,
@@ -23,6 +24,7 @@ class MoveTrack private constructor(
         .active(active)
         .startTile(startTile)
         .endTile(endTile)
+        .gapLength(gapLength)
         .duration(duration)
         .positionOffset(positionOffset)
         .rotationOffset(rotationOffset)
@@ -38,6 +40,8 @@ class MoveTrack private constructor(
         var startTile = Pair(0L, TilePosition.THIS_TILE)
             private set
         var endTile = Pair(0L, TilePosition.THIS_TILE)
+            private set
+        var gapLength: Long = 0
             private set
         var duration = 1.0
             private set
@@ -60,6 +64,7 @@ class MoveTrack private constructor(
 
         fun startTile(startTile: Pair<Long, TilePosition>) = apply { this.startTile = startTile }
         fun endTile(endTile: Pair<Long, TilePosition>) = apply { this.endTile = endTile }
+        fun gapLength(gapLength: Long) = apply { this.gapLength = gapLength }
         fun duration(duration: Double) = apply { this.duration = duration }
         fun positionOffset(positionOffset: Pair<Double, Double>) = apply { this.positionOffset = positionOffset }
         fun rotationOffset(rotationOffset: Double?) = apply { this.rotationOffset = rotationOffset }
@@ -74,6 +79,7 @@ class MoveTrack private constructor(
             active,
             startTile,
             endTile,
+            gapLength,
             duration,
             positionOffset,
             rotationOffset,

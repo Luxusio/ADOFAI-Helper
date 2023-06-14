@@ -6,6 +6,7 @@ class RecolorTrack private constructor(
     active: Boolean?,
     val startTile: Pair<Long, TilePosition>,
     val endTile: Pair<Long, TilePosition>,
+    val gapLength: Long,
     val trackColorType: TrackColorType,
     val trackColor: AlphaColor,
     val secondaryTrackColor: AlphaColor,
@@ -13,6 +14,7 @@ class RecolorTrack private constructor(
     val trackColorPulse: TrackColorPulse,
     val trackPulseLength: Long,
     val trackStyle: TrackStyle,
+    val trackGlowIntensity: Double,
     val angleOffset: Double,
     val eventTag: String
 ) : Action(RecolorTrack::class.java, active) {
@@ -21,6 +23,7 @@ class RecolorTrack private constructor(
         .active(active)
         .startTile(startTile)
         .endTile(endTile)
+        .gapLength(gapLength)
         .trackColorType(trackColorType)
         .trackColor(trackColor)
         .secondaryTrackColor(secondaryTrackColor)
@@ -28,6 +31,7 @@ class RecolorTrack private constructor(
         .trackColorPulse(trackColorPulse)
         .trackPulseLength(trackPulseLength)
         .trackStyle(trackStyle)
+        .trackGlowIntensity(trackGlowIntensity)
         .angleOffset(angleOffset)
         .eventTag(eventTag)
 
@@ -36,6 +40,8 @@ class RecolorTrack private constructor(
         var startTile: Pair<Long, TilePosition> = Pair(0L, TilePosition.THIS_TILE)
             private set
         var endTile: Pair<Long, TilePosition> = Pair(0L, TilePosition.THIS_TILE)
+            private set
+        var gapLength: Long = 0L
             private set
         var trackColorType: TrackColorType = TrackColorType.SINGLE
             private set
@@ -51,12 +57,15 @@ class RecolorTrack private constructor(
             private set
         var trackStyle: TrackStyle = TrackStyle.STANDARD
             private set
+        var trackGlowIntensity: Double = 100.0
+            private set
         var angleOffset: Double = 0.0
             private set
         var eventTag: String = ""
 
         fun startTile(startTile: Pair<Long, TilePosition>) = apply { this.startTile = startTile }
         fun endTile(endTile: Pair<Long, TilePosition>) = apply { this.endTile = endTile }
+        fun gapLength(gapLength: Long) = apply { this.gapLength = gapLength }
         fun trackColorType(trackColorType: TrackColorType) = apply { this.trackColorType = trackColorType }
         fun trackColor(trackColor: AlphaColor) = apply { this.trackColor = trackColor }
         fun secondaryTrackColor(secondaryTrackColor: AlphaColor) =
@@ -68,6 +77,7 @@ class RecolorTrack private constructor(
         fun trackColorPulse(trackColorPulse: TrackColorPulse) = apply { this.trackColorPulse = trackColorPulse }
         fun trackPulseLength(trackPulseLength: Long) = apply { this.trackPulseLength = trackPulseLength }
         fun trackStyle(trackStyle: TrackStyle) = apply { this.trackStyle = trackStyle }
+        fun trackGlowIntensity(trackGlowIntensity: Double) = apply { this.trackGlowIntensity = trackGlowIntensity }
         fun angleOffset(angleOffset: Double) = apply { this.angleOffset = angleOffset }
         fun eventTag(eventTag: String) = apply { this.eventTag = eventTag }
 
@@ -75,6 +85,7 @@ class RecolorTrack private constructor(
             active,
             startTile,
             endTile,
+            gapLength,
             trackColorType,
             trackColor,
             secondaryTrackColor,
@@ -82,6 +93,7 @@ class RecolorTrack private constructor(
             trackColorPulse,
             trackPulseLength,
             trackStyle,
+            trackGlowIntensity,
             angleOffset,
             eventTag
         )

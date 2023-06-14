@@ -1,10 +1,10 @@
 package io.luxus.adofai.lib.action
 
-import io.luxus.adofai.lib.util.requireMin
+import io.luxus.adofai.lib.property.Planets
 
 class MultiPlanet private constructor(
     active: Boolean?,
-    val planets: Long,
+    val planets: Planets,
 ) : Action(MultiPlanet::class.java, active) {
 
     override fun toBuilder() = Builder()
@@ -13,10 +13,10 @@ class MultiPlanet private constructor(
 
     class Builder : Action.Builder<Builder>() {
         override val self = this
-        var planets: Long = 2L
+        var planets: Planets = Planets.TWO_PLANETS
             private set
 
-        fun planets(planets: Long) = apply { this.planets = planets.requireMin(2L) }
+        fun planets(planets: Planets) = apply { this.planets = planets }
 
         override fun build() = MultiPlanet(
             active,

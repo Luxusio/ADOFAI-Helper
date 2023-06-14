@@ -11,8 +11,10 @@ class CustomBackground private constructor(
     val imageColor: Color,
     val parallax: Pair<Double, Double>,
     val bgDisplayMode: BGDisplayModeType,
+    val imageSmoothing: Toggle,
     val lockRot: Toggle,
     val loopBG: Toggle,
+    val scalingRatio: Long,
     val unscaledSize: Long,
     val angleOffset: Double,
     val eventTag: String,
@@ -25,8 +27,10 @@ class CustomBackground private constructor(
         .imageColor(imageColor)
         .parallax(parallax)
         .bgDisplayMode(bgDisplayMode)
+        .imageSmoothing(imageSmoothing)
         .lockRot(lockRot)
         .loopBG(loopBG)
+        .scalingRatio(scalingRatio)
         .unscaledSize(unscaledSize)
         .angleOffset(angleOffset)
         .eventTag(eventTag)
@@ -43,9 +47,13 @@ class CustomBackground private constructor(
             private set
         var bgDisplayMode: BGDisplayModeType = BGDisplayModeType.FIT_TO_SCREEN
             private set
+        var imageSmoothing: Toggle = Toggle.ENABLED
+            private set
         var lockRot: Toggle = Toggle.DISABLED
             private set
         var loopBG: Toggle = Toggle.DISABLED
+            private set
+        var scalingRatio: Long = 100L
             private set
         var unscaledSize: Long = 100L
             private set
@@ -59,8 +67,10 @@ class CustomBackground private constructor(
         fun imageColor(imageColor: Color) = apply { this.imageColor = imageColor }
         fun parallax(parallax: Pair<Double, Double>) = apply { this.parallax = parallax }
         fun bgDisplayMode(bgDisplayMode: BGDisplayModeType) = apply { this.bgDisplayMode = bgDisplayMode }
+        fun imageSmoothing(imageSmoothing: Toggle) = apply { this.imageSmoothing = imageSmoothing }
         fun lockRot(lockRot: Toggle) = apply { this.lockRot = lockRot }
         fun loopBG(loopBG: Toggle) = apply { this.loopBG = loopBG }
+        fun scalingRatio(scalingRatio: Long) = apply { this.scalingRatio = scalingRatio }
         fun unscaledSize(unscaledSize: Long) = apply { this.unscaledSize = unscaledSize }
         fun angleOffset(angleOffset: Double) = apply { this.angleOffset = angleOffset }
         fun eventTag(eventTag: String) = apply { this.eventTag = eventTag }
@@ -72,8 +82,10 @@ class CustomBackground private constructor(
             imageColor,
             parallax,
             bgDisplayMode,
+            imageSmoothing,
             lockRot,
             loopBG,
+            scalingRatio,
             unscaledSize,
             angleOffset,
             eventTag,

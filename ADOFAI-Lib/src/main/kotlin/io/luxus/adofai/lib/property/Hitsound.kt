@@ -27,4 +27,8 @@ enum class Hitsound(override val jsonValue: String) : JsonParseable {
     CLAP_HIT("ClapHit"),
     CLAP_HIT_ECHO("ClapHitEcho"),
     REVERB_CLAP("ReverbClap"),
+    FIRE_TILE("FireTile"),
+    ICE_TILE("IceTile"),
+    VEHICLE_POSITIVE("VehiclePositive"),
+    VEHICLE_NEGATIVE("VehicleNegative"),
 }

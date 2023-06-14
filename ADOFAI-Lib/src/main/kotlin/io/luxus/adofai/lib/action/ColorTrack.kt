@@ -16,6 +16,7 @@ class ColorTrack private constructor(
     val trackStyle: TrackStyle,
     val trackTexture: String,
     val trackTextureScale: Double,
+    val trackGlowIntensity: Double,
 ) : Action(ColorTrack::class.java, active) {
 
     override fun toBuilder() = Builder()
@@ -29,6 +30,7 @@ class ColorTrack private constructor(
         .trackStyle(trackStyle)
         .trackTexture(trackTexture)
         .trackTextureScale(trackTextureScale)
+        .trackGlowIntensity(trackGlowIntensity)
 
     class Builder : Action.Builder<Builder>() {
         override val self = this
@@ -50,6 +52,8 @@ class ColorTrack private constructor(
             private set
         var trackTextureScale: Double = 1.0
             private set
+        var trackGlowIntensity: Double = 100.0
+            private set
 
         fun trackColorType(trackColorType: TrackColorType) = apply { this.trackColorType = trackColorType }
         fun trackColor(trackColor: AlphaColor) = apply { this.trackColor = trackColor }
@@ -64,6 +68,7 @@ class ColorTrack private constructor(
         fun trackStyle(trackStyle: TrackStyle) = apply { this.trackStyle = trackStyle }
         fun trackTexture(trackTexture: String) = apply { this.trackTexture = trackTexture }
         fun trackTextureScale(trackTextureScale: Double) = apply { this.trackTextureScale = trackTextureScale }
+        fun trackGlowIntensity(trackGlowIntensity: Double) = apply { this.trackGlowIntensity = trackGlowIntensity }
 
         override fun build() = ColorTrack(
             active,
@@ -76,6 +81,7 @@ class ColorTrack private constructor(
             trackStyle,
             trackTexture,
             trackTextureScale,
+            trackGlowIntensity,
         )
     }
 }

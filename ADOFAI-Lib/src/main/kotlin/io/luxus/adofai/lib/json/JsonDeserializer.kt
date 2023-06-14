@@ -40,7 +40,7 @@ abstract class JsonDeserializer<T>(
 
         fun <T : JsonParseable> fromJsonParseableEnum(clazz: Class<T>): JsonDeserializer<T> {
             val valueMap = clazz.enumConstants.associateBy { it.jsonValue }
-            return create(clazz) { valueMap[it.asText()] ?: error("Unknown value: $it") }
+            return create(clazz) { valueMap[it.asText()] ?: error("Unknown value: ${clazz.simpleName}.${it.asText()}") }
         }
     }
 }

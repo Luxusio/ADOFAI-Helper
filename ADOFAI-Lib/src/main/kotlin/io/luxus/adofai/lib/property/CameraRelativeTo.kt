@@ -7,4 +7,5 @@ enum class CameraRelativeTo(override val jsonValue: String) : JsonParseable {
     TILE("Tile"),
     GLOBAL("Global"),
     LAST_POSITION("LastPosition"),
+    LAST_POSITION_NO_ROTATION("LastPositionNoRotation"),
 }

@@ -1,62 +1,56 @@
 package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.Ease
-import io.luxus.adofai.lib.property.Toggle
+import io.luxus.adofai.lib.property.TargetPlanet
 
-class ShakeScreen private constructor(
+class ScalePlanets private constructor(
     active: Boolean?,
     val duration: Double,
-    val strength: Double,
-    val intensity: Double,
-    val ease: Ease,
-    val fadeOut: Toggle,
+    val targetPlanet: TargetPlanet,
+    val scale: Double,
     val angleOffset: Double,
+    val ease: Ease,
     val eventTag: String,
-) : Action(ShakeScreen::class.java, active) {
+) : Action(ScalePlanets::class.java, active) {
 
     override fun toBuilder() = Builder()
         .active(active)
         .duration(duration)
-        .strength(strength)
-        .intensity(intensity)
-        .ease(ease)
-        .fadeOut(fadeOut)
+        .targetPlanet(targetPlanet)
+        .scale(scale)
         .angleOffset(angleOffset)
+        .ease(ease)
         .eventTag(eventTag)
 
     class Builder : Action.Builder<Builder>() {
         override val self = this
         var duration: Double = 1.0
             private set
-        var strength: Double = 100.0
+        var targetPlanet: TargetPlanet = TargetPlanet.FIRE_PLANET
             private set
-        var intensity: Double = 100.0
-            private set
-        var ease: Ease = Ease.LINEAR
-            private set
-        var fadeOut: Toggle = Toggle.ENABLED
+        var scale: Double = 100.0
             private set
         var angleOffset: Double = 0.0
+            private set
+        var ease: Ease = Ease.LINEAR
             private set
         var eventTag: String = ""
             private set
 
         fun duration(duration: Double) = apply { this.duration = duration }
-        fun strength(strength: Double) = apply { this.strength = strength }
-        fun intensity(intensity: Double) = apply { this.intensity = intensity }
-        fun ease(ease: Ease) = apply { this.ease = ease }
-        fun fadeOut(fadeOut: Toggle) = apply { this.fadeOut = fadeOut }
+        fun targetPlanet(targetPlanet: TargetPlanet) = apply { this.targetPlanet = targetPlanet }
+        fun scale(scale: Double) = apply { this.scale = scale }
         fun angleOffset(angleOffset: Double) = apply { this.angleOffset = angleOffset }
+        fun ease(ease: Ease) = apply { this.ease = ease }
         fun eventTag(eventTag: String) = apply { this.eventTag = eventTag }
 
-        override fun build() = ShakeScreen(
+        override fun build() = ScalePlanets(
             active,
             duration,
-            strength,
-            intensity,
-            ease,
-            fadeOut,
+            targetPlanet,
+            scale,
             angleOffset,
+            ease,
             eventTag,
         )
     }

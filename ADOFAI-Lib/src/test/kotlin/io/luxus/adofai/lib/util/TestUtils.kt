@@ -18,7 +18,9 @@ fun forAllAdofaiFiles(
     test
 )
 
-fun adofaiFiles(): List<File> = resourceFile("adofai-sample").allSubFiles()
+fun adofaiFiles(): List<File> = resourceFile("adofai-sample")
+    .allSubFiles()
+    .filter { it.name.endsWith(".adofai") }
 
 fun resourceFile(path: String): File {
     return File(Foo::class.java.classLoader.getResource(path)!!.file)

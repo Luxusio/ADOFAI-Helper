@@ -1,6 +1,7 @@
 package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.Ease
+import io.luxus.adofai.lib.property.Hitsound
 
 class FreeRoam private constructor(
     active: Boolean?,
@@ -9,6 +10,8 @@ class FreeRoam private constructor(
     val positionOffset: Pair<Double, Double>,
     val outTime: Long,
     val outEase: Ease,
+    val hitsoundOnBeats: Hitsound,
+    val hitsoundOffBeats: Hitsound,
     val countdownTicks: Long,
     val angleCorrectionDir: Long,
 ) : Action(FreeRoam::class.java, active) {
@@ -20,6 +23,8 @@ class FreeRoam private constructor(
         .positionOffset(positionOffset)
         .outTime(outTime)
         .outEase(outEase)
+        .hitsoundOnBeats(hitsoundOnBeats)
+        .hitsoundOffBeats(hitsoundOffBeats)
         .countdownTicks(countdownTicks)
         .angleCorrectionDir(angleCorrectionDir)
 
@@ -35,6 +40,10 @@ class FreeRoam private constructor(
             private set
         var outEase: Ease = Ease.IN_OUT_SINE
             private set
+        var hitsoundOnBeats: Hitsound = Hitsound.NONE
+            private set
+        var hitsoundOffBeats: Hitsound = Hitsound.NONE
+            private set
         var countdownTicks: Long = 4L
             private set
         var angleCorrectionDir: Long = -1L
@@ -45,6 +54,8 @@ class FreeRoam private constructor(
         fun positionOffset(positionOffset: Pair<Double, Double>) = apply { this.positionOffset = positionOffset }
         fun outTime(outTime: Long) = apply { this.outTime = outTime }
         fun outEase(outEase: Ease) = apply { this.outEase = outEase }
+        fun hitsoundOnBeats(hitsoundOnBeats: Hitsound) = apply { this.hitsoundOnBeats = hitsoundOnBeats }
+        fun hitsoundOffBeats(hitsoundOffBeats: Hitsound) = apply { this.hitsoundOffBeats = hitsoundOffBeats }
         fun countdownTicks(countdownTicks: Long) = apply { this.countdownTicks = countdownTicks }
         fun angleCorrectionDir(angleCorrectionDir: Long) = apply { this.angleCorrectionDir = angleCorrectionDir }
 
@@ -55,6 +66,8 @@ class FreeRoam private constructor(
             positionOffset,
             outTime,
             outEase,
+            hitsoundOnBeats,
+            hitsoundOffBeats,
             countdownTicks,
             angleCorrectionDir,
         )

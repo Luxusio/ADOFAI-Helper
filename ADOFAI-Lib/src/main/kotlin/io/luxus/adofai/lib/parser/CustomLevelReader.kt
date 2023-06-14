@@ -1,8 +1,11 @@
 package io.luxus.adofai.lib.parser
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.TextNode
 import io.luxus.adofai.lib.action.*
 import io.luxus.adofai.lib.json.JsonNodeBuilderApplier
+import io.luxus.adofai.lib.property.Planets
 import io.luxus.adofai.lib.util.toMutableMap
 
 class CustomLevelReader(
@@ -11,20 +14,21 @@ class CustomLevelReader(
 ) {
     fun readAction(jsonNode: JsonNode): Pair<Action, Exception?> {
         try {
-            val jsonValueMap = jsonNode.toMutableMap()
-
-            val eventType = jsonValueMap.remove("eventType") ?: throw IllegalArgumentException("eventType not found")
-            val builderCreator = actionBuilderCreatorMap[eventType.asText()]
-                ?: throw IllegalArgumentException("unknown eventType")
-
-            val builder = builderCreator()
-            val result = jsonNodeBuilderApplier.apply(jsonNode, builder).apply {
-                remove("eventType")
+            val jsonValueMap = jsonNode.toMutableMap().apply {
                 remove("floor")
             }
 
+            val eventType = jsonValueMap.remove("eventType")?.asText()
+                ?: throw IllegalArgumentException("eventType not found ($jsonValueMap)")
+            val builderCreator = actionBuilderCreatorMap[eventType]
+                ?: throw IllegalArgumentException("unknown eventType ($eventType)")
+
+            val builder = builderCreator()
+            fixActionMap(eventType, jsonValueMap)
+            val result = jsonNodeBuilderApplier.apply(jsonValueMap, builder)
+
             if (result.isNotEmpty()) {
-                throw IllegalArgumentException("unknown properties: ${result.keys}")
+                throw IllegalArgumentException("unknown properties: $eventType.${result.keys}")
             }
 
             return Pair(builder.build(), null)
@@ -33,7 +37,26 @@ class CustomLevelReader(
         }
     }
 
+    private fun fixActionMap(eventType: String, jsonValueMap: MutableMap<String, JsonNode>) {
+        when (eventType) {
+            "MultiPlanet" -> {
+                val planets = jsonValueMap.remove("planets")
+                if (planets?.isLong == true) {
+                    val planetsEnum = when (planets.asLong()) {
+                        2L -> Planets.TWO_PLANETS
+                        3L -> Planets.THREE_PLANETS
+                        else -> throw IllegalArgumentException("Invalid value (MultiPlanet.planets=$planets)")
+                    }
+
+                    jsonValueMap["planet"] = TextNode.valueOf(planetsEnum.jsonValue)
+                }
+            }
+        }
+    }
+
     companion object {
+        private val objectMapper = ObjectMapper()
+
         val INSTANCE = CustomLevelReader(
             actionBuilderCreatorMap = mapOf(
                 "AddDecoration" to AddDecoration::Builder,
@@ -64,6 +87,7 @@ class CustomLevelReader(
                 "RecolorTrack" to RecolorTrack::Builder,
                 "RepeatEvents" to RepeatEvents::Builder,
                 "ScaleMargin" to ScaleMargin::Builder,
+                "ScalePlanets" to ScalePlanets::Builder,
                 "ScaleRadius" to ScaleRadius::Builder,
                 "ScreenScroll" to ScreenScroll::Builder,
                 "ScreenTile" to ScreenTile::Builder,
