@@ -21,6 +21,10 @@ class AlphaColor private constructor(
 
     fun toBuilder() = Builder().rgba(r, g, b, a)
 
+    companion object {
+        val WHITE = AlphaColor(255, 255, 255, null)
+    }
+
     open class Builder {
         private var r: Int = 0
         private var g: Int = 0

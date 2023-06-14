@@ -16,6 +16,11 @@ class Color private constructor(
 
     fun toBuilder() = Builder().rgb(r, g, b)
 
+    companion object {
+        val BLACK = Color(0, 0, 0)
+        val WHITE = Color(255, 255, 255)
+    }
+
     open class Builder {
         private var r: Int = 0
         private var g: Int = 0

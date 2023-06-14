@@ -6,9 +6,12 @@ import io.luxus.adofai.lib.util.getParameterTypes
 import io.luxus.adofai.lib.util.toMutableMap
 
 class JsonNodeBuilderApplier(
-    private val jsonDeserializerMap: Map<List<Class<*>>, JsonDeserializer<*>>
+    jsonDeserializers: List<JsonDeserializer<*>>,
 ) {
-    fun apply(jsonNode: JsonNode, target: Any): Map<String, JsonNode> {
+    private val jsonDeserializerMap: Map<List<Class<*>>, JsonDeserializer<*>> =
+        jsonDeserializers.associateBy { it.targetClass }
+
+    fun apply(jsonNode: JsonNode, target: Any): MutableMap<String, JsonNode> {
         val map = jsonNode.toMutableMap()
 
         val nameMethodMap = target.javaClass.methods
@@ -33,23 +36,45 @@ class JsonNodeBuilderApplier(
 
     companion object {
         fun create(): JsonNodeBuilderApplier {
+            val tilePositionValueMap = TilePosition.values().associateBy { it.jsonValue }
+
             val deserializers = listOf(
+                JsonDeserializer.create(Long::class.javaObjectType) { it.asLong() },
+                JsonDeserializer.create(Double::class.javaObjectType) { it.asDouble() },
+                JsonDeserializer.create(Boolean::class.javaObjectType) { it.asBoolean() },
                 JsonDeserializer.create(String::class.java) { it.asText() },
                 JsonDeserializer.create(Long::class.java) { it.asLong() },
                 JsonDeserializer.create(Double::class.java) { it.asDouble() },
                 JsonDeserializer.create(Boolean::class.java) { it.asBoolean() },
                 JsonDeserializer.create(Color::class.java) { Color.Builder().rgb(it.asText()).build() },
                 JsonDeserializer.create(AlphaColor::class.java) { AlphaColor.Builder().rgba(it.asText()).build() },
-                JsonDeserializer.createPair(Long::class.java) { it.asLong() },
-                JsonDeserializer.createPair(Double::class.java) { it.asDouble() },
-                JsonDeserializer.create(AlphaColor::class.java) { AlphaColor.Builder().rgba(it.asText()).build() },
+                JsonDeserializer.createPair(Long::class.javaObjectType) { it.asLong() },
+                JsonDeserializer.createPair(Double::class.javaObjectType) { it.asDouble() },
+                JsonDeserializer.create(
+                    Pair::class.java,
+                    java.lang.Long::class.java,
+                    TilePosition::class.java
+                ) { jsonNode ->
+                    val list = jsonNode.toList()
+                    Pair(list[0].asLong(), tilePositionValueMap[list[1].asText()])
+                } as JsonDeserializer<*>,
                 JsonDeserializer.fromJsonParseableEnum(BGDisplayModeType::class.java),
                 JsonDeserializer.fromJsonParseableEnum(CameraRelativeTo::class.java),
                 JsonDeserializer.fromJsonParseableEnum(DecorationRelativeTo::class.java),
                 JsonDeserializer.fromJsonParseableEnum(DefaultBGShapeType::class.java),
                 JsonDeserializer.fromJsonParseableEnum(Ease::class.java),
+                JsonDeserializer.fromJsonParseableEnum(Filter::class.java),
+                JsonDeserializer.fromJsonParseableEnum(Font::class.java),
+                JsonDeserializer.fromJsonParseableEnum(GameSound::class.java),
                 JsonDeserializer.fromJsonParseableEnum(Hitsound::class.java),
+                JsonDeserializer.fromJsonParseableEnum(HoldMidSound::class.java),
+                JsonDeserializer.fromJsonParseableEnum(HoldMidSoundTimingRelativeTo::class.java),
+                JsonDeserializer.fromJsonParseableEnum(HoldMidSoundType::class.java),
+                JsonDeserializer.fromJsonParseableEnum(HoldSoundType::class.java),
+                JsonDeserializer.fromJsonParseableEnum(Plane::class.java),
                 JsonDeserializer.fromJsonParseableEnum(SpecialArtistType::class.java),
+                JsonDeserializer.fromJsonParseableEnum(SpeedType::class.java),
+                JsonDeserializer.fromJsonParseableEnum(TilePosition::class.java),
                 JsonDeserializer.fromJsonParseableEnum(Toggle::class.java),
                 JsonDeserializer.fromJsonParseableEnum(TrackAnimation::class.java),
                 JsonDeserializer.fromJsonParseableEnum(TrackColorPulse::class.java),
@@ -58,7 +83,7 @@ class JsonNodeBuilderApplier(
                 JsonDeserializer.fromJsonParseableEnum(TrackStyle::class.java),
             )
 
-            return JsonNodeBuilderApplier(deserializers.associateBy { it.targetClass })
+            return JsonNodeBuilderApplier(deserializers)
         }
     }
 }
