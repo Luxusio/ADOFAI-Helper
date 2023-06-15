@@ -14,16 +14,17 @@ class CustomLevelReader(
 ) {
     fun readAction(jsonNode: JsonNode): Pair<Action, Exception?> {
         try {
-            val jsonValueMap = jsonNode.toMutableMap().apply {
-                remove("floor")
-            }
-
+            val jsonValueMap = jsonNode.toMutableMap()
             val eventType = jsonValueMap.remove("eventType")?.asText()
                 ?: throw IllegalArgumentException("eventType not found ($jsonValueMap)")
             val builderCreator = actionBuilderCreatorMap[eventType]
                 ?: throw IllegalArgumentException("unknown eventType ($eventType)")
 
             val builder = builderCreator()
+            if (builder !is Decoration.Builder) {
+                jsonValueMap.remove("floor")
+            }
+
             fixActionMap(eventType, jsonValueMap)
             val result = jsonNodeBuilderApplier.apply(jsonValueMap, builder)
 

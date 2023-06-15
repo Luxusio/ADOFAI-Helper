@@ -59,11 +59,13 @@ class JsonNodeBuilderApplier(
                     Pair(list[0].asLong(), tilePositionValueMap[list[1].asText()])
                 } as JsonDeserializer<*>,
                 JsonDeserializer.fromJsonParseableEnum(BGDisplayModeType::class.java),
+                JsonDeserializer.fromJsonParseableEnum(BlendMode::class.java),
                 JsonDeserializer.fromJsonParseableEnum(CameraRelativeTo::class.java),
                 JsonDeserializer.fromJsonParseableEnum(DecorationRelativeTo::class.java),
                 JsonDeserializer.fromJsonParseableEnum(DefaultBGShapeType::class.java),
                 JsonDeserializer.fromJsonParseableEnum(Ease::class.java),
                 JsonDeserializer.fromJsonParseableEnum(EasePartBehavior::class.java),
+                JsonDeserializer.fromJsonParseableEnum(FailHitboxType::class.java),
                 JsonDeserializer.fromJsonParseableEnum(Filter::class.java),
                 JsonDeserializer.fromJsonParseableEnum(Font::class.java),
                 JsonDeserializer.fromJsonParseableEnum(GameSound::class.java),

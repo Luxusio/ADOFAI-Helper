@@ -29,6 +29,24 @@ class CustomLevelReaderTest : BehaviorSpec({
                     }.joinToString("\n") shouldBe ""
                 }
             }
+
+            When("read decorations with CustomLevelReader") {
+                val actionNodes = jsonNode["decorations"]
+                val results = actionNodes?.map { CustomLevelReader.INSTANCE.readAction(it) } ?: listOf()
+
+                then("no exception, no unknown action") {
+                    results.mapNotNull { it.second?.message }
+                        .joinToString("\n") shouldBe ""
+                    results.mapNotNull {
+                        val first = it.first
+                        if (first is UnknownAction) {
+                            first.rawData.toPrettyString()
+                        } else {
+                            null
+                        }
+                    }.joinToString("\n") shouldBe ""
+                }
+            }
         }
     }
 })
