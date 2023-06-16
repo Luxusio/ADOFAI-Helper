@@ -22,7 +22,7 @@ class CustomLevelSetting private constructor(
     val levelTags: String,
     val artistLinks: String,
     val difficulty: Long,
-    val requireMods: List<String>,
+    val requiredMods: List<String>,
     val songFilename: String,
     val bpm: Double,
     val volume: Long,
@@ -55,6 +55,7 @@ class CustomLevelSetting private constructor(
     val bgImageColor: Color,
     val parallax: Pair<Double, Double>,
     val bgDisplayMode: BGDisplayModeType,
+    val imageSmoothing: Toggle,
     val lockRot: Toggle,
     val loopBG: Toggle,
     val scalingRatio: Long,
@@ -71,6 +72,7 @@ class CustomLevelSetting private constructor(
     val stickToFloors: Toggle,
     val planetEase: Ease,
     val planetEaseParts: Long,
+    val planetEasePartBehavior: EasePartBehavior,
     val customClass: String,
     val defaultTextColor: AlphaColor,
     val defaultTextShadowColor: AlphaColor,
@@ -100,7 +102,7 @@ class CustomLevelSetting private constructor(
         .levelTags(levelTags)
         .artistLinks(artistLinks)
         .difficulty(difficulty)
-        .requireMods(requireMods)
+        .requiredMods(requiredMods)
         .songFilename(songFilename)
         .bpm(bpm)
         .volume(volume)
@@ -133,6 +135,7 @@ class CustomLevelSetting private constructor(
         .bgImageColor(bgImageColor)
         .parallax(parallax)
         .bgDisplayMode(bgDisplayMode)
+        .imageSmoothing(imageSmoothing)
         .lockRot(lockRot)
         .loopBG(loopBG)
         .scalingRatio(scalingRatio)
@@ -149,6 +152,7 @@ class CustomLevelSetting private constructor(
         .stickToFloors(stickToFloors)
         .planetEase(planetEase)
         .planetEaseParts(planetEaseParts)
+        .planetEasePartBehavior(planetEasePartBehavior)
         .customClass(customClass)
         .defaultTextColor(defaultTextColor)
         .defaultTextShadowColor(defaultTextShadowColor)
@@ -160,81 +164,160 @@ class CustomLevelSetting private constructor(
         .unknownProperties(unknownProperties)
 
     class Builder {
-        private var version: Long = 13
-        private var artist: String = ""
-        private var specialArtistType: SpecialArtistType = SpecialArtistType.NONE
-        private var artistPermission: String = ""
-        private var song: String = ""
-        private var author: String = ""
-        private var separateCountdownTime: Toggle = Toggle.ENABLED
-        private var previewImage: String = ""
-        private var previewIcon: String = ""
-        private var previewIconColor: Color = Color.Builder().rgb(0x00, 0x3f, 0x52).build()
-        private var previewSongStart: Long = 0
-        private var previewSongDuration: Long = 10
-        private var seizureWarning: Toggle = Toggle.DISABLED
-        private var levelDesc: String = ""
-        private var levelTags: String = ""
-        private var artistLinks: String = ""
-        private var difficulty: Long = 1
-        private var requireMods: List<String> = listOf()
-        private var songFilename: String = ""
-        private var bpm: Double = 100.0
-        private var volume: Long = 0
-        private var offset: Long = 0
-        private var pitch: Long = 100
-        private var hitsound: Hitsound = Hitsound.KICK
-        private var hitsoundVolume: Long = 100
-        private var countdownTicks: Long = 4
-        private var trackColorType: TrackColorType = TrackColorType.SINGLE
-        private var trackColor: AlphaColor = AlphaColor.Builder().rgba(0x00, 0x3f, 0x52, null).build()
-        private var secondaryTrackColor: AlphaColor = AlphaColor.Builder().rgba(0xff, 0xff, 0xff, null).build()
-        private var trackColorAnimDuration: Double = 2.0
-        private var trackColorPulse: TrackColorPulse = TrackColorPulse.NONE
-        private var trackPulseLength: Long = 10
-        private var trackStyle: TrackStyle = TrackStyle.STANDARD
-        private var trackTexture: String = ""
-        private var trackTextureScale: Double = 1.0
-        private var trackGlowIntensity: Double = 100.0
-        private var trackAnimation: TrackAnimation = TrackAnimation.NONE
-        private var beatsAhead: Long = 3
-        private var trackDisappearAnimation: TrackDisappearAnimation = TrackDisappearAnimation.NONE
-        private var beatsBehind: Long = 4
-        private var backgroundColor: Color = Color.Builder().rgb(0x00, 0x00, 0x00).build()
-        private var showDefaultBGIfNoImage: Toggle = Toggle.ENABLED
-        private var showDefaultBGTile: Toggle = Toggle.ENABLED
-        private var defaultBGTileColor: AlphaColor = AlphaColor.Builder().rgba(0x10, 0x11, 0x21, null).build()
-        private var defaultBGShapeType: DefaultBGShapeType = DefaultBGShapeType.DEFAULT
-        private var defaultBGShapeColor: AlphaColor = AlphaColor.Builder().rgba(0xff, 0xff, 0xff, null).build()
-        private var bgImage: String = ""
-        private var bgImageColor: Color = Color.Builder().rgb(0xff, 0xff, 0xff).build()
-        private var parallax: Pair<Double, Double> = Pair(100.0, 100.0)
-        private var bgDisplayMode: BGDisplayModeType = BGDisplayModeType.FIT_TO_SCREEN
-        private var lockRot: Toggle = Toggle.DISABLED
-        private var loopBG: Toggle = Toggle.DISABLED
-        private var scalingRatio: Long = 100
-        private var relativeTo: CameraRelativeTo = CameraRelativeTo.PLAYER
-        private var position: Pair<Double, Double> = Pair(100.0, 100.0)
-        private var rotation: Double = 0.0
-        private var zoom: Long = 0
-        private var pulseOnFloor: Toggle = Toggle.ENABLED
-        private var startCamLowVFX: Toggle = Toggle.DISABLED
-        private var bgVideo: String = ""
-        private var loopVideo: Toggle = Toggle.DISABLED
-        private var vidOffset: Long = 0
-        private var floorIconOutlines: Toggle = Toggle.DISABLED
-        private var stickToFloors: Toggle = Toggle.ENABLED
-        private var planetEase: Ease = Ease.LINEAR
-        private var planetEaseParts: Long = 1
-        private var customClass: String = ""
-        private var defaultTextColor: AlphaColor = AlphaColor.Builder().rgba(0xff, 0xff, 0xff, null).build()
-        private var defaultTextShadowColor: AlphaColor = AlphaColor.Builder().rgba(0x00, 0x00, 0x00, 0x50).build()
-        private var congratsText: String = ""
-        private var perfectText: String = ""
-        private var legacyFlash: Boolean = false
-        private var legacyCamRelativeTo: Boolean = false
-        private var legacySpriteTiles: Boolean = false
-        private var unknownProperties: Map<String, JsonNode> = mapOf()
+        var version: Long = 13
+            private set
+        var artist: String = ""
+            private set
+        var specialArtistType: SpecialArtistType = SpecialArtistType.NONE
+            private set
+        var artistPermission: String = ""
+            private set
+        var song: String = ""
+            private set
+        var author: String = ""
+            private set
+        var separateCountdownTime: Toggle = Toggle.ENABLED
+            private set
+        var previewImage: String = ""
+            private set
+        var previewIcon: String = ""
+            private set
+        var previewIconColor: Color = Color.Builder().rgb(0x00, 0x3f, 0x52).build()
+            private set
+        var previewSongStart: Long = 0
+            private set
+        var previewSongDuration: Long = 10
+            private set
+        var seizureWarning: Toggle = Toggle.DISABLED
+            private set
+        var levelDesc: String = ""
+            private set
+        var levelTags: String = ""
+            private set
+        var artistLinks: String = ""
+            private set
+        var difficulty: Long = 1
+            private set
+        var requiredMods: List<String> = listOf()
+            private set
+        var songFilename: String = ""
+            private set
+        var bpm: Double = 100.0
+            private set
+        var volume: Long = 0
+            private set
+        var offset: Long = 0
+            private set
+        var pitch: Long = 100
+            private set
+        var hitsound: Hitsound = Hitsound.KICK
+            private set
+        var hitsoundVolume: Long = 100
+            private set
+        var countdownTicks: Long = 4
+            private set
+        var trackColorType: TrackColorType = TrackColorType.SINGLE
+            private set
+        var trackColor: AlphaColor = AlphaColor.Builder().rgba(0x00, 0x3f, 0x52, null).build()
+            private set
+        var secondaryTrackColor: AlphaColor = AlphaColor.Builder().rgba(0xff, 0xff, 0xff, null).build()
+            private set
+        var trackColorAnimDuration: Double = 2.0
+            private set
+        var trackColorPulse: TrackColorPulse = TrackColorPulse.NONE
+            private set
+        var trackPulseLength: Long = 10
+            private set
+        var trackStyle: TrackStyle = TrackStyle.STANDARD
+            private set
+        var trackTexture: String = ""
+            private set
+        var trackTextureScale: Double = 1.0
+            private set
+        var trackGlowIntensity: Double = 100.0
+            private set
+        var trackAnimation: TrackAnimation = TrackAnimation.NONE
+            private set
+        var beatsAhead: Long = 3
+            private set
+        var trackDisappearAnimation: TrackDisappearAnimation = TrackDisappearAnimation.NONE
+            private set
+        var beatsBehind: Long = 4
+            private set
+        var backgroundColor: Color = Color.Builder().rgb(0x00, 0x00, 0x00).build()
+            private set
+        var showDefaultBGIfNoImage: Toggle = Toggle.ENABLED
+            private set
+        var showDefaultBGTile: Toggle = Toggle.ENABLED
+            private set
+        var defaultBGTileColor: AlphaColor = AlphaColor.Builder().rgba(0x10, 0x11, 0x21, null).build()
+            private set
+        var defaultBGShapeType: DefaultBGShapeType = DefaultBGShapeType.DEFAULT
+            private set
+        var defaultBGShapeColor: AlphaColor = AlphaColor.Builder().rgba(0xff, 0xff, 0xff, null).build()
+            private set
+        var bgImage: String = ""
+            private set
+        var bgImageColor: Color = Color.Builder().rgb(0xff, 0xff, 0xff).build()
+            private set
+        var parallax: Pair<Double, Double> = Pair(100.0, 100.0)
+            private set
+        var bgDisplayMode: BGDisplayModeType = BGDisplayModeType.FIT_TO_SCREEN
+            private set
+        var imageSmoothing: Toggle = Toggle.ENABLED
+            private set
+        var lockRot: Toggle = Toggle.DISABLED
+            private set
+        var loopBG: Toggle = Toggle.DISABLED
+            private set
+        var scalingRatio: Long = 100
+            private set
+        var relativeTo: CameraRelativeTo = CameraRelativeTo.PLAYER
+            private set
+        var position: Pair<Double, Double> = Pair(100.0, 100.0)
+            private set
+        var rotation: Double = 0.0
+            private set
+        var zoom: Long = 0
+            private set
+        var pulseOnFloor: Toggle = Toggle.ENABLED
+            private set
+        var startCamLowVFX: Toggle = Toggle.DISABLED
+            private set
+        var bgVideo: String = ""
+            private set
+        var loopVideo: Toggle = Toggle.DISABLED
+            private set
+        var vidOffset: Long = 0
+            private set
+        var floorIconOutlines: Toggle = Toggle.DISABLED
+            private set
+        var stickToFloors: Toggle = Toggle.ENABLED
+            private set
+        var planetEase: Ease = Ease.LINEAR
+            private set
+        var planetEaseParts: Long = 1
+            private set
+        var planetEasePartBehavior: EasePartBehavior = EasePartBehavior.MIRROR
+            private set
+        var customClass: String = ""
+            private set
+        var defaultTextColor: AlphaColor = AlphaColor.Builder().rgba(0xff, 0xff, 0xff, null).build()
+            private set
+        var defaultTextShadowColor: AlphaColor = AlphaColor.Builder().rgba(0x00, 0x00, 0x00, 0x50).build()
+            private set
+        var congratsText: String = ""
+            private set
+        var perfectText: String = ""
+            private set
+        var legacyFlash: Boolean = false
+            private set
+        var legacyCamRelativeTo: Boolean = false
+            private set
+        var legacySpriteTiles: Boolean = false
+            private set
+        var unknownProperties: Map<String, JsonNode> = mapOf()
+            private set
 
         fun version(version: Long) = apply { this.version = version.requireMin(1) }
         fun artist(artist: String) = apply { this.artist = artist }
@@ -257,7 +340,7 @@ class CustomLevelSetting private constructor(
         fun levelTags(levelTags: String) = apply { this.levelTags = levelTags }
         fun artistLinks(artistLinks: String) = apply { this.artistLinks = artistLinks }
         fun difficulty(difficulty: Long) = apply { this.difficulty = difficulty }
-        fun requireMods(requireMods: List<String>) = apply { this.requireMods = requireMods.toList() }
+        fun requiredMods(requiredMods: List<String>) = apply { this.requiredMods = requiredMods.toList() }
         fun songFilename(songFilename: String) = apply { this.songFilename = songFilename }
         fun bpm(bpm: Double) = apply { this.bpm = bpm }
         fun volume(volume: Long) = apply { this.volume = volume }
@@ -302,6 +385,7 @@ class CustomLevelSetting private constructor(
         fun bgImageColor(bgImageColor: Color) = apply { this.bgImageColor = bgImageColor }
         fun parallax(parallax: Pair<Double, Double>) = apply { this.parallax = parallax }
         fun bgDisplayMode(bgDisplayMode: BGDisplayModeType) = apply { this.bgDisplayMode = bgDisplayMode }
+        fun imageSmoothing(imageSmoothing: Toggle) = apply { this.imageSmoothing = imageSmoothing }
         fun lockRot(lockRot: Toggle) = apply { this.lockRot = lockRot }
         fun loopBG(loopBG: Toggle) = apply { this.loopBG = loopBG }
         fun scalingRatio(scalingRatio: Long) = apply { this.scalingRatio = scalingRatio }
@@ -318,6 +402,7 @@ class CustomLevelSetting private constructor(
         fun stickToFloors(stickToFloors: Toggle) = apply { this.stickToFloors = stickToFloors }
         fun planetEase(planetEase: Ease) = apply { this.planetEase = planetEase }
         fun planetEaseParts(planetEaseParts: Long) = apply { this.planetEaseParts = planetEaseParts }
+        fun planetEasePartBehavior(planetEasePartBehavior: EasePartBehavior) = apply { this.planetEasePartBehavior = planetEasePartBehavior }
         fun customClass(customClass: String) = apply { this.customClass = customClass }
         fun defaultTextColor(defaultTextColor: AlphaColor) = apply { this.defaultTextColor = defaultTextColor }
         fun defaultTextShadowColor(defaultTextShadowColor: AlphaColor) =
@@ -349,7 +434,7 @@ class CustomLevelSetting private constructor(
             levelTags,
             artistLinks,
             difficulty,
-            requireMods,
+            requiredMods,
             songFilename,
             bpm,
             volume,
@@ -382,6 +467,7 @@ class CustomLevelSetting private constructor(
             bgImageColor,
             parallax,
             bgDisplayMode,
+            imageSmoothing,
             lockRot,
             loopBG,
             scalingRatio,
@@ -398,6 +484,7 @@ class CustomLevelSetting private constructor(
             stickToFloors,
             planetEase,
             planetEaseParts,
+            planetEasePartBehavior,
             customClass,
             defaultTextColor,
             defaultTextShadowColor,

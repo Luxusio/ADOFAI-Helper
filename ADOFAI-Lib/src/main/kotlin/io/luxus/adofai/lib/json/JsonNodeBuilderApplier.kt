@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.luxus.adofai.lib.property.*
 import io.luxus.adofai.lib.util.getParameterTypes
 import io.luxus.adofai.lib.util.toMutableMap
+import java.lang.reflect.Method
+import java.util.concurrent.ConcurrentHashMap
 
 class JsonNodeBuilderApplier(
     jsonDeserializers: List<JsonDeserializer<*>>,
@@ -11,27 +13,46 @@ class JsonNodeBuilderApplier(
     private val jsonDeserializerMap: Map<List<Class<*>>, JsonDeserializer<*>> =
         jsonDeserializers.associateBy { it.targetClass }
 
+    private val targetClassDeserializerMap: MutableMap<Class<*>, Map<String, Pair<Method, JsonDeserializer<*>>>> = ConcurrentHashMap()
+
     fun apply(jsonNode: JsonNode, target: Any) = apply(jsonNode.toMutableMap(), target)
 
-    fun apply(jsonNodeMap: MutableMap<String, JsonNode>, target: Any): MutableMap<String, JsonNode> {
-        val nameMethodMap = target.javaClass.methods
-            .filter { it.parameterCount == 1 }
-            .groupBy { it.name }
+    /**
+     * @return Pair of failed to read nodes, and exceptions.
+     */
+    fun apply(jsonNodeMap: MutableMap<String, JsonNode>, target: Any): Pair<MutableMap<String, JsonNode>, List<Exception>> {
+        val deserializerMap = getDeserializerMap(target.javaClass)
+        val exceptions = mutableListOf<Exception>()
 
         val it = jsonNodeMap.iterator()
         while (it.hasNext()) {
             val (key, value) = it.next()
-            nameMethodMap[key]?.forEach { method ->
-                val types = method.getParameterTypes(0)
-                val deserializer = jsonDeserializerMap[types]
-                if (deserializer != null) {
+            try {
+                deserializerMap[key]?.let { (method, deserializer) ->
                     method.invoke(target, deserializer.deserialize(value))
                     it.remove()
                 }
+            } catch (e: Exception) {
+                exceptions.add(e)
             }
         }
 
-        return jsonNodeMap
+        return Pair(jsonNodeMap, exceptions)
+    }
+
+    private fun getDeserializerMap(clazz: Class<*>): Map<String, Pair<Method, JsonDeserializer<*>>> {
+        return targetClassDeserializerMap.computeIfAbsent(clazz) { targetClazz ->
+            targetClazz.methods
+                .filter { it.parameterCount == 1 }
+                .groupBy { it.name }
+                .mapNotNull { (name, methods) ->
+                    methods.firstNotNullOfOrNull { method ->
+                        val types = method.getParameterTypes(0)
+                        jsonDeserializerMap[types]?.let { Pair(method, it) }
+                    }?.let { name to it }
+                }
+                .toMap()
+        }
     }
 
     companion object {
@@ -48,6 +69,7 @@ class JsonNodeBuilderApplier(
                 JsonDeserializer.create(Boolean::class.java) { it.asBoolean() },
                 JsonDeserializer.create(Color::class.java) { Color.Builder().rgb(it.asText()).build() },
                 JsonDeserializer.create(AlphaColor::class.java) { AlphaColor.Builder().rgba(it.asText()).build() },
+                JsonDeserializer.create(List::class.java, String::class.java) { jsonNode -> jsonNode.map { it.asText() } },
                 JsonDeserializer.createPair(Long::class.javaObjectType) { it.asLong() },
                 JsonDeserializer.createPair(Double::class.javaObjectType) { it.asDouble() },
                 JsonDeserializer.create(

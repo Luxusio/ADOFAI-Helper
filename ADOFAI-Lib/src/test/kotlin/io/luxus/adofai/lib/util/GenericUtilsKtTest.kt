@@ -33,6 +33,11 @@ class GenericUtilsKtTest : BehaviorSpec({
             MoveTrack.Builder::class.java.getMethod("scale", Pair::class.java),
             0,
             listOf(Pair::class.java, java.lang.Double::class.java, java.lang.Double::class.java)
+        ),
+        row(
+            CustomLevelSetting.Builder::class.java.getMethod("requiredMods", List::class.java),
+            0,
+            listOf(List::class.java, String::class.java)
         )
     ).forAll { method, index, expected ->
         Given("method") {
