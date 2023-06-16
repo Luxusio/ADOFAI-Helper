@@ -43,11 +43,9 @@ class CustomLevelReader(
             "MultiPlanet" -> {
                 val planets = jsonValueMap.remove("planets")
                 if (planets?.isLong == true) {
-                    val planetsEnum = when (planets.asLong()) {
-                        2L -> Planets.TWO_PLANETS
-                        3L -> Planets.THREE_PLANETS
-                        else -> throw IllegalArgumentException("Invalid value (MultiPlanet.planets=$planets)")
-                    }
+                    val planetsEnum = Planets.values()
+                        .firstOrNull { it.count == planets.asLong() }
+                        ?: throw IllegalArgumentException("Invalid value (MultiPlanet.planets=$planets)")
 
                     jsonValueMap["planet"] = TextNode.valueOf(planetsEnum.jsonValue)
                 }

@@ -1,6 +1,7 @@
 package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.SpeedType
+import io.luxus.adofai.lib.util.mulOf
 
 class SetSpeed private constructor(
     active: Boolean?,
@@ -16,6 +17,48 @@ class SetSpeed private constructor(
         .beatsPerMinute(beatsPerMinute)
         .bpmMultiplier(bpmMultiplier)
         .angleOffset(angleOffset)
+
+    companion object {
+        fun calculateBpm(
+            prevTileBpm: Double,
+            travelAngle: Double,
+            actions: List<SetSpeed>
+        ): CalculateBpmResult {
+
+            var prevAngleOffset = 0.0
+            var prevBpm = prevTileBpm
+
+            val bpmAndRatios = mutableListOf<Pair<Double, Double>>()
+
+            actions.groupBy { it.angleOffset }
+                .values
+                .map { it.last() } // todo : check what happen if it has same angleOffset
+                .sortedBy { it.angleOffset }
+                .forEach {
+
+                    val currAngleOffset = it.angleOffset
+                    val currBpm = when (it.speedType) {
+                        SpeedType.BPM -> it.beatsPerMinute
+                        SpeedType.MULTIPLIER -> prevBpm * it.bpmMultiplier
+                    }
+
+                    val prevBpmRatio = (currAngleOffset - prevAngleOffset) / travelAngle
+
+                    bpmAndRatios.add(Pair(prevBpm, prevBpmRatio))
+
+                    prevAngleOffset = currAngleOffset
+                    prevBpm = currBpm
+                }
+
+            bpmAndRatios.add(Pair(prevBpm, (travelAngle - prevAngleOffset) / travelAngle))
+
+            val multiply = bpmAndRatios.mulOf { it.first }
+            val currTileBpm = multiply / bpmAndRatios.sumOf { multiply / it.first * it.second }
+            val nextTileBpm = bpmAndRatios.last().first
+
+            return CalculateBpmResult(currTileBpm, nextTileBpm)
+        }
+    }
 
     class Builder : Action.Builder<Builder>() {
         override val self = this
@@ -45,3 +88,8 @@ class SetSpeed private constructor(
         )
     }
 }
+
+class CalculateBpmResult(
+    val currTileBpm: Double,
+    val nextTileBpm: Double
+)
