@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.luxus.adofai.lib.action.Decoration
 import io.luxus.adofai.lib.json.AdofaiJsonInputStream
 import io.luxus.adofai.lib.parser.CustomLevelReader
+import io.luxus.adofai.lib.parser.CustomLevelWriter
 import java.io.InputStream
+import java.io.OutputStream
 
 class CustomLevel private constructor(
     val levelSetting: CustomLevelSetting,
@@ -16,6 +18,10 @@ class CustomLevel private constructor(
         .levelSetting(levelSetting)
         .tiles(tiles)
         .decorations(decorations)
+
+    fun write(outputStream: OutputStream) {
+        CustomLevelWriter.write(this, outputStream)
+    }
 
     companion object {
         val objectMapper = ObjectMapper()

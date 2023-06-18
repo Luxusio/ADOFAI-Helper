@@ -20,7 +20,6 @@ class ReaderExtensionsKtTest : BehaviorSpec({
 
             Then("read result should be same with readText") {
                 sb.toString() shouldBe file.readText()
-                println(sb.toString())
             }
         }
     }
