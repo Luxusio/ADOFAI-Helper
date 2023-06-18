@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "SetConditionalEvents", builderClass = SetConditionalEvents.Builder::class, single = true)
 class SetConditionalEvents private constructor(
     active: Boolean?,
     val perfectTag: String,

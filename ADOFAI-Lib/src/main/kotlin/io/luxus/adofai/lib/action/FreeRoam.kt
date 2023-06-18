@@ -3,6 +3,7 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.Hitsound
 
+@EventType(jsonValue = "FreeRoam", builderClass = FreeRoam.Builder::class, single = true)
 class FreeRoam private constructor(
     active: Boolean?,
     val duration: Double,

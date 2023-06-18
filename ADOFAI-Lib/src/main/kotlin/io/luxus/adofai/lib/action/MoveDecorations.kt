@@ -5,6 +5,7 @@ import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.MaskingType
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "MoveDecorations", builderClass = MoveDecorations.Builder::class, single = false)
 class MoveDecorations private constructor(
     active: Boolean?,
     val duration: Double,

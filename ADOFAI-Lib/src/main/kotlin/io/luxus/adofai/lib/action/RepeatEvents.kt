@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "RepeatEvents", builderClass = RepeatEvents.Builder::class, single = false)
 class RepeatEvents private constructor(
     active: Boolean?,
     val repetitions: Long,

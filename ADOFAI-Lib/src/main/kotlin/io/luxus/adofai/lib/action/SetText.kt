@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "SetText", builderClass = SetText.Builder::class, single = false)
 class SetText private constructor(
     active: Boolean?,
     val decText: String,

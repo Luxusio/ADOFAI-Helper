@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "Checkpoint", builderClass = Checkpoint.Builder::class, single = true)
 class Checkpoint private constructor(
     active: Boolean?,
     val tileOffset: Long,

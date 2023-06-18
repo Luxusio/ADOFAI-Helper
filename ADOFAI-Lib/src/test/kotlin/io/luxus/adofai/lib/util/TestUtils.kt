@@ -18,7 +18,7 @@ fun forAllAdofaiFiles(
     test
 )
 
-fun adofaiFiles(): List<File> = resourceFile("adofai-sample")
+fun adofaiFiles(): List<File> = resourceFile("adofai/all")
     .allSubFiles()
     .filter { it.name.endsWith(".adofai") }
 

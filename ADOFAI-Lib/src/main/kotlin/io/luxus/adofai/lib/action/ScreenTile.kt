@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "ScreenTile", builderClass = ScreenTile.Builder::class, single = false)
 class ScreenTile private constructor(
     active: Boolean?,
     val tile: Pair<Double, Double>,

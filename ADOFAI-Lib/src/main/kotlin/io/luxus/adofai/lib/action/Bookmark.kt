@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "Bookmark", builderClass = Bookmark.Builder::class, single = true)
 class Bookmark private constructor(
     active: Boolean?
 ) : Action(Bookmark::class.java, active) {

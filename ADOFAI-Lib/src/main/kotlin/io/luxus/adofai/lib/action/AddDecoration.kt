@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.*
 
+@EventType(jsonValue = "AddDecoration", builderClass = AddDecoration.Builder::class, single = false)
 class AddDecoration private constructor(
     active: Boolean?,
     visible: Boolean?,

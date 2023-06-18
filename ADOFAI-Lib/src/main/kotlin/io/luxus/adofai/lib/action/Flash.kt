@@ -4,6 +4,7 @@ import io.luxus.adofai.lib.property.AlphaColor
 import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.Plane
 
+@EventType(jsonValue = "Flash", builderClass = Flash.Builder::class, single = false)
 class Flash private constructor(
     active: Boolean?,
     val duration: Double,

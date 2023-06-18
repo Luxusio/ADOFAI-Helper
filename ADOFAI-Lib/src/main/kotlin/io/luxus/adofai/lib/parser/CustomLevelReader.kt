@@ -6,7 +6,10 @@ import io.luxus.adofai.lib.CustomLevel
 import io.luxus.adofai.lib.CustomLevelSetting
 import io.luxus.adofai.lib.Tile
 import io.luxus.adofai.lib.TileAngle
-import io.luxus.adofai.lib.action.*
+import io.luxus.adofai.lib.action.Action
+import io.luxus.adofai.lib.action.Decoration
+import io.luxus.adofai.lib.action.EventType
+import io.luxus.adofai.lib.action.UnknownAction
 import io.luxus.adofai.lib.json.JsonNodeBuilderApplier
 import io.luxus.adofai.lib.property.LegacyTileAngle
 import io.luxus.adofai.lib.property.Planets
@@ -14,9 +17,18 @@ import io.luxus.adofai.lib.util.generalizedAngle
 import io.luxus.adofai.lib.util.toMutableMap
 
 class CustomLevelReader(
-    val actionBuilderCreatorMap: Map<String, () -> Action.Builder<*>>,
+    val actionClasses: Map<Class<out Action>, EventType>,
     val jsonNodeBuilderApplier: JsonNodeBuilderApplier,
 ) {
+
+    val actionBuilderCreatorMap: Map<String, () -> Action.Builder<*>> = actionClasses
+        .map { it.value }
+        .associate {
+            val constructor = it.builderClass.java
+                .constructors
+                .first { constructor -> constructor.parameters.isEmpty() }
+            it.jsonValue to { constructor.newInstance() as Action.Builder<*> }
+        }
 
     val legacyTileAngleMap = LegacyTileAngle.values().associateBy { it.code }
 
@@ -177,49 +189,7 @@ class CustomLevelReader(
 
     companion object {
         val INSTANCE = CustomLevelReader(
-            actionBuilderCreatorMap = mapOf(
-                "AddDecoration" to AddDecoration::Builder,
-                "AddText" to AddText::Builder,
-                "AnimateTrack" to AnimateTrack::Builder,
-                "AutoPlayTiles" to AutoPlayTiles::Builder,
-                "Bloom" to Bloom::Builder,
-                "Bookmark" to Bookmark::Builder,
-                "ChangeTrack" to ChangeTrack::Builder,
-                "Checkpoint" to Checkpoint::Builder,
-                "ColorTrack" to ColorTrack::Builder,
-                "CustomBackground" to CustomBackground::Builder,
-                "EditorComment" to EditorComment::Builder,
-                "Flash" to Flash::Builder,
-                "FreeRoam" to FreeRoam::Builder,
-                "FreeRoamRemove" to FreeRoamRemove::Builder,
-                "FreeRoamTwirl" to FreeRoamTwirl::Builder,
-                "HallOfMirrors" to HallOfMirrors::Builder,
-                "Hide" to Hide::Builder,
-                "Hold" to Hold::Builder,
-                "MoveCamera" to MoveCamera::Builder,
-                "MoveDecorations" to MoveDecorations::Builder,
-                "MoveTrack" to MoveTrack::Builder,
-                "MultiPlanet" to MultiPlanet::Builder,
-                "Pause" to Pause::Builder,
-                "PlaySound" to PlaySound::Builder,
-                "PositionTrack" to PositionTrack::Builder,
-                "RecolorTrack" to RecolorTrack::Builder,
-                "RepeatEvents" to RepeatEvents::Builder,
-                "ScaleMargin" to ScaleMargin::Builder,
-                "ScalePlanets" to ScalePlanets::Builder,
-                "ScaleRadius" to ScaleRadius::Builder,
-                "ScreenScroll" to ScreenScroll::Builder,
-                "ScreenTile" to ScreenTile::Builder,
-                "SetConditionalEvents" to SetConditionalEvents::Builder,
-                "SetFilter" to SetFilter::Builder,
-                "SetHitsound" to SetHitsound::Builder,
-                "SetHoldSound" to SetHoldSound::Builder,
-                "SetPlanetRotation" to SetPlanetRotation::Builder,
-                "SetSpeed" to SetSpeed::Builder,
-                "SetText" to SetText::Builder,
-                "ShakeScreen" to ShakeScreen::Builder,
-                "Twirl" to Twirl::Builder,
-            ),
+            actionClasses = Action.CLASSES,
             jsonNodeBuilderApplier = JsonNodeBuilderApplier.create(),
         )
     }

@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.*
 
+@EventType(jsonValue = "RecolorTrack", builderClass = RecolorTrack.Builder::class, single = false)
 class RecolorTrack private constructor(
     active: Boolean?,
     val startTile: Pair<Long, TilePosition>,

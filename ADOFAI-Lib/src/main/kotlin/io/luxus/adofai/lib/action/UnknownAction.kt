@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import com.fasterxml.jackson.databind.JsonNode
 
+@EventType(jsonValue = "", builderClass = UnknownAction.Builder::class, single = false)
 class UnknownAction(
     val rawData: JsonNode
 ) : Action(UnknownAction::class.java, null) {

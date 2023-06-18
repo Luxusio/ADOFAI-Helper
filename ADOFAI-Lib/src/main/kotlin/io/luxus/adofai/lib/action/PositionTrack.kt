@@ -3,6 +3,7 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.TilePosition
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "PositionTrack", builderClass = PositionTrack.Builder::class, single = true)
 class PositionTrack private constructor(
     active: Boolean?,
     val positionOffset: Pair<Double, Double>,

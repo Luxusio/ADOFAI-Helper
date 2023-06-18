@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.*
 
+@EventType(jsonValue = "ChangeTrack", builderClass = ChangeTrack.Builder::class, single = false)
 class ChangeTrack private constructor(
     active: Boolean?,
     val trackColorType: TrackColorType,

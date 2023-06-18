@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "FreeRoamRemove", builderClass = FreeRoamRemove.Builder::class, single = false)
 class FreeRoamRemove private constructor(
     active: Boolean?,
     val size: Pair<Double, Double>,

@@ -4,6 +4,7 @@ import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.Filter
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "SetFilter", builderClass = SetFilter.Builder::class, single = false)
 class SetFilter private constructor(
     active: Boolean?,
     val filter: Filter,

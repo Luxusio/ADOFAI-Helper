@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "AutoPlayTiles", builderClass = AutoPlayTiles.Builder::class, single = true)
 class AutoPlayTiles(
     active: Boolean?,
     val enabled: Toggle,

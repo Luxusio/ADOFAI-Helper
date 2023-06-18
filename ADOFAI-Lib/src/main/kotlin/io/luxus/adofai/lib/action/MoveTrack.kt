@@ -4,6 +4,7 @@ import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.TilePosition
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "MoveTrack", builderClass = MoveTrack.Builder::class, single = false)
 class MoveTrack private constructor(
     active: Boolean?,
     val startTile: Pair<Long, TilePosition>,

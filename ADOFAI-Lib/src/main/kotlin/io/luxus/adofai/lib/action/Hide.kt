@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "Hide", builderClass = Hide.Builder::class, single = true)
 class Hide private constructor(
     active: Boolean?,
     val hideJudgment: Toggle,

@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "HallOfMirrors", builderClass = HallOfMirrors.Builder::class, single = false)
 class HallOfMirrors private constructor(
     active: Boolean?,
     val enabled: Toggle,

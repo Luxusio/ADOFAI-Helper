@@ -3,6 +3,7 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.TrackAnimation
 import io.luxus.adofai.lib.property.TrackDisappearAnimation
 
+@EventType(jsonValue = "AnimateTrack", builderClass = AnimateTrack.Builder::class, single = true)
 class AnimateTrack private constructor(
     active: Boolean?,
     val trackAnimation: TrackAnimation,

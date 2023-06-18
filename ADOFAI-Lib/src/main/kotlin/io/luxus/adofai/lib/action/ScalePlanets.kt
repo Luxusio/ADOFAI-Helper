@@ -3,6 +3,7 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.TargetPlanet
 
+@EventType(jsonValue = "ScalePlanets", builderClass = ScalePlanets.Builder::class, single = true)
 class ScalePlanets private constructor(
     active: Boolean?,
     val duration: Double,

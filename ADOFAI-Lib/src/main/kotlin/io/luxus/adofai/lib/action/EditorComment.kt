@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "EditorComment", builderClass = EditorComment.Builder::class, single = false)
 class EditorComment private constructor(
     active: Boolean?,
     val comment: String,

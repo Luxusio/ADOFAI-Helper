@@ -34,12 +34,13 @@ class CustomLevel private constructor(
             private set
 
         private var _tileBuilders: MutableList<Tile.Builder> = MutableList(11) { Tile.Builder().angle(TileAngle._0) }
-        var tileBuilders = _tileBuilders.toList()
-            private set
+        val tileBuilders: List<Tile.Builder>
+            get() = _tileBuilders.toList()
+
 
         private var _decorations: MutableList<Decoration> = mutableListOf()
-        var decorations = _decorations.toList()
-            private set
+        val decorations: List<Decoration>
+            get() = _decorations.toList()
 
         fun levelSetting(levelSetting: CustomLevelSetting) =
             apply { this.levelSettingBuilder = levelSetting.toBuilder() }

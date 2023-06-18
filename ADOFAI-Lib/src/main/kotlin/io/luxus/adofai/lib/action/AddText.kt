@@ -5,6 +5,7 @@ import io.luxus.adofai.lib.property.DecorationRelativeTo
 import io.luxus.adofai.lib.property.Font
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "AddText", builderClass = AddText.Builder::class, single = false)
 class AddText private constructor(
     active: Boolean?,
     visible: Boolean?,

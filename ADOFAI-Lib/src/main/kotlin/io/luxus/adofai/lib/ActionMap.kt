@@ -88,12 +88,12 @@ private class MutableActionMapImpl(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Action> get(key: Class<T>): List<T> {
-        return (map[key]?.first?.toList() ?: listOf()) as List<T>
+        return (map[key]?.second?.toList() ?: listOf()) as List<T>
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Action> getFirstOrNull(key: Class<T>): T? {
-        return map[key]?.first?.firstOrNull() as? T
+        return map[key]?.second?.firstOrNull() as? T
     }
 
     override val values: List<Action>

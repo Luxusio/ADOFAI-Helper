@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.action
 
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "Hold", builderClass = Hold.Builder::class, single = true)
 class Hold private constructor(
     active: Boolean?,
     val duration: Long,

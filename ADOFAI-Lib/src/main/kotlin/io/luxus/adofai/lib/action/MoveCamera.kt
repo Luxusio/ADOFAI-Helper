@@ -4,6 +4,7 @@ import io.luxus.adofai.lib.property.CameraRelativeTo
 import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "MoveCamera", builderClass = MoveCamera.Builder::class, single = false)
 class MoveCamera private constructor(
     active: Boolean?,
     val duration: Double,

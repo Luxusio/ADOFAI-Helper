@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "ScaleMargin", builderClass = ScaleMargin.Builder::class, single = false)
 class ScaleMargin private constructor(
     active: Boolean?,
     val scale: Long,

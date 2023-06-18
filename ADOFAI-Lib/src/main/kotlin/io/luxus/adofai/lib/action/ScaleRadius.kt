@@ -1,5 +1,6 @@
 package io.luxus.adofai.lib.action
 
+@EventType(jsonValue = "ScaleRadius", builderClass = ScaleRadius.Builder::class, single = true)
 class ScaleRadius private constructor(
     active: Boolean?,
     val scale: Long,

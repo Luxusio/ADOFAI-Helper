@@ -3,6 +3,7 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.SpeedType
 import io.luxus.adofai.lib.util.mulOf
 
+@EventType(jsonValue = "SetSpeed", builderClass = SetSpeed.Builder::class, single = false)
 class SetSpeed private constructor(
     active: Boolean?,
     val speedType: SpeedType,

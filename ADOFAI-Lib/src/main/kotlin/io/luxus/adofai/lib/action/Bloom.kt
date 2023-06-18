@@ -4,6 +4,7 @@ import io.luxus.adofai.lib.property.AlphaColor
 import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "Bloom", builderClass = Bloom.Builder::class, single = false)
 class Bloom private constructor(
     active: Boolean?,
     val enabled: Toggle,

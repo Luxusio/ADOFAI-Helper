@@ -4,6 +4,7 @@ import io.luxus.adofai.lib.property.BGDisplayModeType
 import io.luxus.adofai.lib.property.Color
 import io.luxus.adofai.lib.property.Toggle
 
+@EventType(jsonValue = "CustomBackground", builderClass = CustomBackground.Builder::class, single = false)
 class CustomBackground private constructor(
     active: Boolean?,
     val color: Color,
