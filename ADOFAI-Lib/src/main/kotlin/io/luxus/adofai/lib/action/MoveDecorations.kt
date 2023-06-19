@@ -6,13 +6,13 @@ import io.luxus.adofai.lib.property.MaskingType
 import io.luxus.adofai.lib.property.Toggle
 
 @EventType(jsonValue = "MoveDecorations", builderClass = MoveDecorations.Builder::class, single = false)
-class MoveDecorations private constructor(
-    active: Boolean?,
+data class MoveDecorations(
+    override val active: Boolean?,
     val duration: Double,
     val tag: String,
     val decorationImage: String?,
-    val positionOffset: Pair<Double?, Double?>,
-    val pivotOffset: Pair<Double?, Double?>,
+    val positionOffset: Pair<Double?, Double?>?,
+    val pivotOffset: Pair<Double?, Double?>?,
     val rotationOffset: Double?,
     val scale: Pair<Double, Double>?,
     val color: AlphaColor?,
@@ -59,9 +59,9 @@ class MoveDecorations private constructor(
             private set
         var decorationImage: String? = null
             private set
-        var positionOffset: Pair<Double?, Double?> = Pair(0.0, 0.0)
+        var positionOffset: Pair<Double?, Double?>? = Pair(0.0, 0.0)
             private set
-        var pivotOffset: Pair<Double?, Double?> = Pair(null, null)
+        var pivotOffset: Pair<Double?, Double?>? = Pair(null, null)
             private set
         var rotationOffset: Double? = null
             private set
@@ -95,8 +95,8 @@ class MoveDecorations private constructor(
         fun duration(duration: Double) = apply { this.duration = duration }
         fun tag(tag: String) = apply { this.tag = tag }
         fun decorationImage(decorationImage: String?) = apply { this.decorationImage = decorationImage }
-        fun positionOffset(positionOffset: Pair<Double?, Double?>) = apply { this.positionOffset = positionOffset }
-        fun pivotOffset(pivotOffset: Pair<Double?, Double?>) = apply { this.pivotOffset = pivotOffset }
+        fun positionOffset(positionOffset: Pair<Double?, Double?>?) = apply { this.positionOffset = positionOffset }
+        fun pivotOffset(pivotOffset: Pair<Double?, Double?>?) = apply { this.pivotOffset = pivotOffset }
         fun rotationOffset(rotationOffset: Double?) = apply { this.rotationOffset = rotationOffset }
         fun scale(scale: Pair<Double, Double>?) = apply { this.scale = scale }
         fun color(color: AlphaColor?) = apply { this.color = color }

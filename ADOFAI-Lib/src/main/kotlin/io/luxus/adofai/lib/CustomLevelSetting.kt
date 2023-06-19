@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.luxus.adofai.lib.property.*
 import io.luxus.adofai.lib.util.requireMin
 
-class CustomLevelSetting private constructor(
+data class CustomLevelSetting(
     val version: Long,
     val artist: String,
     val specialArtistType: SpecialArtistType,
@@ -83,6 +83,10 @@ class CustomLevelSetting private constructor(
     val legacySpriteTiles: Boolean,
     val unknownProperties: Map<String, JsonNode>,
 ) {
+
+    init {
+        version.requireMin(1)
+    }
 
     fun toBuilder() = Builder()
         .version(version)

@@ -4,7 +4,7 @@ import io.luxus.adofai.lib.json.JsonParseable
 import io.luxus.adofai.lib.util.HEX_DIGITS
 import io.luxus.adofai.lib.util.requireRange
 
-class Color private constructor(
+data class Color(
     val r: Int,
     val g: Int,
     val b: Int,
@@ -14,6 +14,12 @@ class Color private constructor(
      */
     override val jsonValue: String =
         "${HEX_DIGITS[r shr 4]}${HEX_DIGITS[r and 0xF]}${HEX_DIGITS[g shr 4]}${HEX_DIGITS[g and 0xF]}${HEX_DIGITS[b shr 4]}${HEX_DIGITS[b and 0xF]}"
+
+    init {
+        r.requireRange(0, 255)
+        g.requireRange(0, 255)
+        b.requireRange(0, 255)
+    }
 
     fun toBuilder() = Builder().rgb(r, g, b)
 

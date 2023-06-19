@@ -1,8 +1,8 @@
 package io.luxus.adofai.lib.action
 
 @EventType(jsonValue = "Bookmark", builderClass = Bookmark.Builder::class, single = true)
-class Bookmark private constructor(
-    active: Boolean?
+data class Bookmark(
+    override val active: Boolean?
 ) : Action(Bookmark::class.java, active) {
 
     override fun toBuilder() = Builder()

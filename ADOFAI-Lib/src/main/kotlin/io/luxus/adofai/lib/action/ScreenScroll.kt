@@ -1,8 +1,8 @@
 package io.luxus.adofai.lib.action
 
 @EventType(jsonValue = "ScreenScroll", builderClass = ScreenScroll.Builder::class, single = false)
-class ScreenScroll private constructor(
-    active: Boolean?,
+data class ScreenScroll(
+    override val active: Boolean?,
     val scroll: Pair<Double, Double>,
     val angleOffset: Double,
     val eventTag: String,

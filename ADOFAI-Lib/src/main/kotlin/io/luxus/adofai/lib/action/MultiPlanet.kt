@@ -3,8 +3,8 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.Planets
 
 @EventType(jsonValue = "MultiPlanet", builderClass = MultiPlanet.Builder::class, single = true)
-class MultiPlanet private constructor(
-    active: Boolean?,
+data class MultiPlanet(
+    override val active: Boolean?,
     val planets: Planets,
 ) : Action(MultiPlanet::class.java, active) {
 

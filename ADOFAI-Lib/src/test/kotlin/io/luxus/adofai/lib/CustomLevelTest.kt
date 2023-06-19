@@ -10,7 +10,7 @@ class CustomLevelTest : BehaviorSpec({
             When("readDetailed") {
                 val (_, exceptions) = CustomLevel.readDetailed(file.inputStream())
                 Then("no exceptions return") {
-                    exceptions.joinToString("\n").shouldBeEmpty()
+                    exceptions.joinToString("\n") { it.message ?: "" }.shouldBeEmpty()
                 }
             }
         }

@@ -3,8 +3,8 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.Hitsound
 
 @EventType(jsonValue = "PlaySound", builderClass = PlaySound.Builder::class, single = false)
-class PlaySound private constructor(
-    active: Boolean?,
+data class PlaySound(
+    override val active: Boolean?,
     val hitsound: Hitsound,
     val hitsoundVolume: Long,
     val angleOffset: Double,

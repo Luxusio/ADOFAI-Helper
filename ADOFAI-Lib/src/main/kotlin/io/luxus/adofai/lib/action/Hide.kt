@@ -3,8 +3,8 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.Toggle
 
 @EventType(jsonValue = "Hide", builderClass = Hide.Builder::class, single = true)
-class Hide private constructor(
-    active: Boolean?,
+data class Hide(
+    override val active: Boolean?,
     val hideJudgment: Toggle,
     val hideTileIcon: Toggle,
 ) : Action(Hide::class.java, active) {

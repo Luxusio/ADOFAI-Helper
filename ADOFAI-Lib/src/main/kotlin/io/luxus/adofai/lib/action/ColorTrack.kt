@@ -6,8 +6,8 @@ import io.luxus.adofai.lib.property.TrackColorType
 import io.luxus.adofai.lib.property.TrackStyle
 
 @EventType(jsonValue = "ColorTrack", builderClass = ColorTrack.Builder::class, single = true)
-class ColorTrack private constructor(
-    active: Boolean?,
+data class ColorTrack(
+    override val active: Boolean?,
     val trackColorType: TrackColorType,
     val trackColor: AlphaColor,
     val secondaryTrackColor: AlphaColor,

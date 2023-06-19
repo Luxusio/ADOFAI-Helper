@@ -32,6 +32,12 @@ private class ActionMapImpl(
     override fun <T : Action> getFirstOrNull(key: Class<T>): T? {
         return map[key]?.firstOrNull() as? T
     }
+
+    override fun equals(other: Any?) = other is ActionMapImpl &&
+        other.values == values
+
+    override fun hashCode() = values.hashCode()
+
 }
 
 fun actionMapOf(actions: List<Action> = listOf()): ActionMap {
@@ -95,6 +101,11 @@ private class MutableActionMapImpl(
     override fun <T : Action> getFirstOrNull(key: Class<T>): T? {
         return map[key]?.second?.firstOrNull() as? T
     }
+
+    override fun equals(other: Any?) = other is MutableActionMapImpl &&
+        other._values == _values
+
+    override fun hashCode() = _values.hashCode()
 
     override val values: List<Action>
         get() {

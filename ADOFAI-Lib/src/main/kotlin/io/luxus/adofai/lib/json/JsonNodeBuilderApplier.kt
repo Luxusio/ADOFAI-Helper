@@ -2,10 +2,13 @@ package io.luxus.adofai.lib.json
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.luxus.adofai.lib.property.*
-import io.luxus.adofai.lib.util.getParameterTypes
+import io.luxus.adofai.lib.util.toClassList
 import io.luxus.adofai.lib.util.toMutableMap
-import java.lang.reflect.Method
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.full.memberFunctions
+import kotlin.reflect.jvm.javaMethod
 
 class JsonNodeBuilderApplier(
     jsonDeserializers: List<JsonDeserializer<*>>,
@@ -13,41 +16,68 @@ class JsonNodeBuilderApplier(
     private val jsonDeserializerMap: Map<List<Class<*>>, JsonDeserializer<*>> =
         jsonDeserializers.associateBy { it.targetClass }
 
-    private val targetClassDeserializerMap: MutableMap<Class<*>, Map<String, Pair<Method, JsonDeserializer<*>>>> = ConcurrentHashMap()
+    private val targetClassDeserializerMap: MutableMap<KClass<*>, Map<String, Pair<KFunction<*>, JsonDeserializer<*>>>> =
+        ConcurrentHashMap()
 
     fun apply(jsonNode: JsonNode, target: Any) = apply(jsonNode.toMutableMap(), target)
 
     /**
      * @return Pair of failed to read nodes, and exceptions.
      */
-    fun apply(jsonNodeMap: MutableMap<String, JsonNode>, target: Any): Pair<MutableMap<String, JsonNode>, List<Exception>> {
-        val deserializerMap = getDeserializerMap(target.javaClass)
+    fun apply(
+        jsonNodeMap: MutableMap<String, JsonNode>,
+        target: Any
+    ): Pair<MutableMap<String, JsonNode>, List<Exception>> {
+        val deserializerMap = getDeserializerMap(target::class)
         val exceptions = mutableListOf<Exception>()
+
+        val map = deserializerMap.toMutableMap()
 
         val it = jsonNodeMap.iterator()
         while (it.hasNext()) {
             val (key, value) = it.next()
             try {
-                deserializerMap[key]?.let { (method, deserializer) ->
-                    method.invoke(target, deserializer.deserialize(value))
+                map.remove(key)?.let { (method, deserializer) ->
+                    method.call(target, deserializer.deserialize(value))
                     it.remove()
                 }
             } catch (e: Exception) {
-                exceptions.add(e)
+                exceptions.add(
+                    RuntimeException(
+                        "Failed to read value (${target.javaClass}, $key=$value) (msg=${e.message})",
+                        e
+                    )
+                )
+            }
+        }
+
+        map.entries.forEach { (key, value) ->
+            if (value.first.parameters[1].type.isMarkedNullable) {
+                try {
+                    value.first.call(target, null)
+                } catch (e: Exception) {
+                    exceptions.add(
+                        RuntimeException(
+                            "Failed to read value (${target.javaClass}, $key=null) (msg=${e.message})",
+                            e
+                        )
+                    )
+                }
             }
         }
 
         return Pair(jsonNodeMap, exceptions)
     }
 
-    private fun getDeserializerMap(clazz: Class<*>): Map<String, Pair<Method, JsonDeserializer<*>>> {
+    private fun getDeserializerMap(clazz: KClass<*>): Map<String, Pair<KFunction<*>, JsonDeserializer<*>>> {
         return targetClassDeserializerMap.computeIfAbsent(clazz) { targetClazz ->
-            targetClazz.methods
-                .filter { it.parameterCount == 1 }
+            targetClazz.memberFunctions
+                .filter { it.javaMethod?.declaringClass != Object::class.java }
+                .filter { it.parameters.size == 2 }
                 .groupBy { it.name }
                 .mapNotNull { (name, methods) ->
                     methods.firstNotNullOfOrNull { method ->
-                        val types = method.getParameterTypes(0)
+                        val types = method.parameters[1].type.toClassList()
                         jsonDeserializerMap[types]?.let { Pair(method, it) }
                     }?.let { name to it }
                 }
@@ -69,12 +99,23 @@ class JsonNodeBuilderApplier(
                 JsonDeserializer.create(Boolean::class.java) { it.asBoolean() },
                 JsonDeserializer.create(Color::class.java) { Color.Builder().rgb(it.asText()).build() },
                 JsonDeserializer.create(AlphaColor::class.java) { AlphaColor.Builder().rgba(it.asText()).build() },
-                JsonDeserializer.create(List::class.java, String::class.java) { jsonNode -> jsonNode.map { it.asText() } },
-                JsonDeserializer.createPair(Long::class.javaObjectType) { it.asLong() },
-                JsonDeserializer.createPair(Double::class.javaObjectType) { it.asDouble() },
+                JsonDeserializer.create(
+                    List::class.java,
+                    String::class.java
+                ) { jsonNode -> jsonNode.map { it.asText() } },
+                JsonDeserializer.createPair(Long::class.java) { it.asLong() },
+                JsonDeserializer.createPair(Double::class.java) { it.asDouble() },
+                @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+                JsonDeserializer.createPair(java.lang.Long::class.java) {
+                    if (it.isNull) null else it.asLong() as java.lang.Long
+                },
+                @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+                JsonDeserializer.createPair(java.lang.Double::class.java) {
+                    if (it.isNull) null else it.asDouble() as java.lang.Double
+                },
                 JsonDeserializer.create(
                     Pair::class.java,
-                    java.lang.Long::class.java,
+                    Long::class.java,
                     TilePosition::class.java
                 ) { jsonNode ->
                     val list = jsonNode.toList()

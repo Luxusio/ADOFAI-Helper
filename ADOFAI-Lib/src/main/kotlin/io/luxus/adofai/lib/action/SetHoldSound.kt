@@ -6,8 +6,8 @@ import io.luxus.adofai.lib.property.HoldMidSoundType
 import io.luxus.adofai.lib.property.HoldSoundType
 
 @EventType(jsonValue = "SetHoldSound", builderClass = SetHoldSound.Builder::class, single = true)
-class SetHoldSound private constructor(
-    active: Boolean?,
+data class SetHoldSound(
+    override val active: Boolean?,
     val holdStartSound: HoldSoundType,
     val holdLoopSound: HoldSoundType,
     val holdEndSound: HoldSoundType,

@@ -4,8 +4,8 @@ import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.EasePartBehavior
 
 @EventType(jsonValue = "SetPlanetRotation", builderClass = SetPlanetRotation.Builder::class, single = true)
-class SetPlanetRotation private constructor(
-    active: Boolean?,
+data class SetPlanetRotation(
+    override val active: Boolean?,
     val ease: Ease,
     val easeParts: Long,
     val easePartBehavior: EasePartBehavior,

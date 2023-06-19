@@ -1,8 +1,8 @@
 package io.luxus.adofai.lib.action
 
 @EventType(jsonValue = "Pause", builderClass = Pause.Builder::class, single = true)
-class Pause private constructor(
-    active: Boolean?,
+data class Pause(
+    override val active: Boolean?,
     val duration: Double,
     val countdownTicks: Long,
     val angleCorrectionDir: Long,

@@ -40,8 +40,10 @@ class CustomLevelReader(
             ?: throw IllegalArgumentException("angleData or pathData must be exist")
         angleData.add(0, TileAngle._0)
 
-        val customLevelSetting = readCustomLevelSetting(jsonNode["settings"]
-            ?: throw IllegalArgumentException("settings must be exist"))
+        val customLevelSetting = readCustomLevelSetting(
+            jsonNode["settings"]
+                ?: throw IllegalArgumentException("settings must be exist")
+        )
             .let { (customLevelSetting, exceptions) ->
                 resultExceptions += exceptions
                 customLevelSetting
@@ -174,14 +176,26 @@ class CustomLevelReader(
 
     private fun fixActionMap(eventType: String, jsonValueMap: MutableMap<String, JsonNode>) {
         when (eventType) {
+            "AutoPlayTiles" -> {
+                jsonValueMap.remove("safetyTiles")
+            }
+
+            "MoveCamera" -> {
+                jsonValueMap.remove("dontDisable")
+                jsonValueMap.remove("minVfxOnly")
+            }
+
+            "MoveTrack" -> {
+                jsonValueMap.remove("maxVfxOnly")
+            }
+
             "MultiPlanet" -> {
-                val planets = jsonValueMap.remove("planets")
-                if (planets?.isLong == true) {
+                jsonValueMap["planets"]?.takeIf { it.isNumber }?.let { planets ->
                     val planetsEnum = Planets.values()
                         .firstOrNull { it.count == planets.asLong() }
                         ?: throw IllegalArgumentException("Invalid value (MultiPlanet.planets=$planets)")
 
-                    jsonValueMap["planet"] = TextNode.valueOf(planetsEnum.jsonValue)
+                    jsonValueMap["planets"] = TextNode.valueOf(planetsEnum.jsonValue)
                 }
             }
         }

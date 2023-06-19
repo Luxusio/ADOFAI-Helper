@@ -5,8 +5,8 @@ import io.luxus.adofai.lib.property.Filter
 import io.luxus.adofai.lib.property.Toggle
 
 @EventType(jsonValue = "SetFilter", builderClass = SetFilter.Builder::class, single = false)
-class SetFilter private constructor(
-    active: Boolean?,
+data class SetFilter(
+    override val active: Boolean?,
     val filter: Filter,
     val enabled: Toggle,
     val intensity: Long,

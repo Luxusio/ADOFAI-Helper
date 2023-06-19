@@ -3,8 +3,8 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.Toggle
 
 @EventType(jsonValue = "HallOfMirrors", builderClass = HallOfMirrors.Builder::class, single = false)
-class HallOfMirrors private constructor(
-    active: Boolean?,
+data class HallOfMirrors(
+    override val active: Boolean?,
     val enabled: Toggle,
     val angleOffset: Double,
     val eventTag: String,

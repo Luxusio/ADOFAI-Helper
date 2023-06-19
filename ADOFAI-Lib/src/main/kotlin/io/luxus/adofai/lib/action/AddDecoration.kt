@@ -3,10 +3,9 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.*
 
 @EventType(jsonValue = "AddDecoration", builderClass = AddDecoration.Builder::class, single = false)
-class AddDecoration private constructor(
-    active: Boolean?,
-    visible: Boolean?,
-    floor: Long?,
+data class AddDecoration(
+    override val visible: Boolean?,
+    override val floor: Long?,
     val decorationImage: String,
     val position: Pair<Double, Double>,
     val relativeTo: DecorationRelativeTo,
@@ -34,10 +33,9 @@ class AddDecoration private constructor(
     val failHitboxOffset: Pair<Double, Double>,
     val failHitboxRotation: Double,
     val components: String,
-) : Decoration(AddDecoration::class.java, active, visible, floor) {
+) : Decoration(AddDecoration::class.java, visible, floor) {
 
     override fun toBuilder() = Builder()
-        .active(active)
         .visible(visible)
         .floor(floor)
         .decorationImage(decorationImage)
@@ -156,7 +154,6 @@ class AddDecoration private constructor(
         fun components(components: String) = apply { this.components = components }
 
         override fun build() = AddDecoration(
-            active,
             visible,
             floor,
             decorationImage,

@@ -1,9 +1,9 @@
 package io.luxus.adofai.lib.action
 
 @EventType(jsonValue = "ScaleMargin", builderClass = ScaleMargin.Builder::class, single = false)
-class ScaleMargin private constructor(
-    active: Boolean?,
-    val scale: Long,
+data class ScaleMargin(
+    override val active: Boolean?,
+    val scale: Double,
 ) : Action(ScaleMargin::class.java, active) {
 
     override fun toBuilder() = Builder()
@@ -12,10 +12,10 @@ class ScaleMargin private constructor(
 
     class Builder : Action.Builder<Builder>() {
         override val self = this
-        var scale: Long = 100L
+        var scale: Double = 100.0
             private set
 
-        fun scale(scale: Long) = apply { this.scale = scale }
+        fun scale(scale: Double) = apply { this.scale = scale }
 
         override fun build() = ScaleMargin(
             active,

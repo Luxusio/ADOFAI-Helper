@@ -6,10 +6,9 @@ import io.luxus.adofai.lib.property.Font
 import io.luxus.adofai.lib.property.Toggle
 
 @EventType(jsonValue = "AddText", builderClass = AddText.Builder::class, single = false)
-class AddText private constructor(
-    active: Boolean?,
-    visible: Boolean?,
-    floor: Long?,
+data class AddText(
+    override val visible: Boolean?,
+    override val floor: Long?,
     val decText: String,
     val font: Font,
     val position: Pair<Double, Double>,
@@ -25,10 +24,9 @@ class AddText private constructor(
     val parallax: Pair<Double, Double>,
     val parallaxOffset: Pair<Double, Double>,
     val tag: String,
-) : Decoration(AddText::class.java, active, visible, floor) {
+) : Decoration(AddText::class.java, visible, floor) {
 
     override fun toBuilder() = Builder()
-        .active(active)
         .visible(visible)
         .floor(floor)
         .decText(decText)
@@ -97,7 +95,6 @@ class AddText private constructor(
         fun tag(tag: String) = apply { this.tag = tag }
 
         override fun build() = AddText(
-            active,
             visible,
             floor,
             decText,

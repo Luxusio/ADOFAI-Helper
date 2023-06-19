@@ -1,8 +1,8 @@
 package io.luxus.adofai.lib.action
 
 @EventType(jsonValue = "FreeRoamTwirl", builderClass = FreeRoamTwirl.Builder::class, single = false)
-class FreeRoamTwirl private constructor(
-    active: Boolean?,
+data class FreeRoamTwirl(
+    override val active: Boolean?,
     val position: Pair<Double, Double>,
 ) : Action(FreeRoamTwirl::class.java, active) {
 

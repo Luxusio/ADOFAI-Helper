@@ -8,7 +8,7 @@ import io.luxus.adofai.lib.parser.CustomLevelWriter
 import java.io.InputStream
 import java.io.OutputStream
 
-class CustomLevel private constructor(
+data class CustomLevel(
     val levelSetting: CustomLevelSetting,
     val tiles: List<Tile>,
     val decorations: List<Decoration>,

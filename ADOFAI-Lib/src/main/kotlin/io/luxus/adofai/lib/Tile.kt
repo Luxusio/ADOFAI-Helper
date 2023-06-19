@@ -1,5 +1,7 @@
 package io.luxus.adofai.lib
 
+import java.util.Objects.hash
+
 class Tile private constructor(
     val angle: TileAngle,
     val actionMap: ActionMap,
@@ -9,6 +11,12 @@ class Tile private constructor(
     fun toBuilder() = Builder()
         .angle(angle)
         .actionMap(actionMap)
+
+    override fun equals(other: Any?) = other is Tile
+        && other.angle == angle
+        && other.actionMap == actionMap
+
+    override fun hashCode() = hash(angle, actionMap)
 
     class Builder {
         var angle = TileAngle._0

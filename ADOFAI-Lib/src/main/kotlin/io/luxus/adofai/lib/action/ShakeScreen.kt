@@ -4,8 +4,8 @@ import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.Toggle
 
 @EventType(jsonValue = "ShakeScreen", builderClass = ShakeScreen.Builder::class, single = false)
-class ShakeScreen private constructor(
-    active: Boolean?,
+data class ShakeScreen(
+    override val active: Boolean?,
     val duration: Double,
     val strength: Double,
     val intensity: Double,

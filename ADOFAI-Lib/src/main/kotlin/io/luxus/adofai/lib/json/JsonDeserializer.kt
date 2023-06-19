@@ -23,8 +23,8 @@ abstract class JsonDeserializer<T>(
         @Suppress("UNCHECKED_CAST")
         fun <T> createPair(
             clazz: Class<T>,
-            deserializer: (JsonNode) -> T
-        ): JsonDeserializer<Pair<T, T>> {
+            deserializer: (JsonNode) -> T?
+        ): JsonDeserializer<Pair<T?, T?>> {
             return create(Pair::class.java, clazz, clazz) { jsonNode ->
                 val list = jsonNode.toList().map { deserializer(it) }
                 return@create if (list.isEmpty()) {
@@ -35,7 +35,7 @@ abstract class JsonDeserializer<T>(
                 } else {
                     Pair(list[0], list[1])
                 }
-            } as JsonDeserializer<Pair<T, T>>
+            } as JsonDeserializer<Pair<T?, T?>>
         }
 
         fun <T : JsonParseable> fromJsonParseableEnum(clazz: Class<T>): JsonDeserializer<T> {

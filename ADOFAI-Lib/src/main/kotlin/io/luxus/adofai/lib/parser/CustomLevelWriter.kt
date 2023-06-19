@@ -111,14 +111,12 @@ class CustomLevelWriter {
                 is Decoration -> {
                     floor?.let { bw.write("\"floor\": $it, ") }
                     bw.write("\"eventType\": \"$eventType\"")
-                    ObjectToJsonStringApplier.apply(action) { bw.write(", $it") }
-                    action.visible?.let { bw.write("\"visible\": $it, ") }
+                    ObjectToJsonStringApplier.apply(action, { it != "floor" }) { bw.write(", $it") }
                 }
 
                 else -> {
                     bw.write("\"floor\": $floor, \"eventType\": \"$eventType\"")
                     ObjectToJsonStringApplier.apply(action) { bw.write(", $it") }
-                    action.active?.let { bw.write(", \"active\": $it") }
                 }
             }
 

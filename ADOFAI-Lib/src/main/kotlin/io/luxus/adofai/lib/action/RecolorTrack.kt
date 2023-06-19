@@ -3,8 +3,8 @@ package io.luxus.adofai.lib.action
 import io.luxus.adofai.lib.property.*
 
 @EventType(jsonValue = "RecolorTrack", builderClass = RecolorTrack.Builder::class, single = false)
-class RecolorTrack private constructor(
-    active: Boolean?,
+data class RecolorTrack(
+    override val active: Boolean?,
     val startTile: Pair<Long, TilePosition>,
     val endTile: Pair<Long, TilePosition>,
     val gapLength: Long,

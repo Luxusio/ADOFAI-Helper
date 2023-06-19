@@ -4,7 +4,7 @@ import kotlin.reflect.KClass
 
 abstract class Action protected constructor(
     val eventType: Class<out Action>,
-    val active: Boolean?,
+    open val active: Boolean?,
 ) {
     abstract fun toBuilder(): Builder<*>
 

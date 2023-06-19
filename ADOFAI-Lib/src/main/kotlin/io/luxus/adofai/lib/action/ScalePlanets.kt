@@ -4,8 +4,8 @@ import io.luxus.adofai.lib.property.Ease
 import io.luxus.adofai.lib.property.TargetPlanet
 
 @EventType(jsonValue = "ScalePlanets", builderClass = ScalePlanets.Builder::class, single = true)
-class ScalePlanets private constructor(
-    active: Boolean?,
+data class ScalePlanets(
+    override val active: Boolean?,
     val duration: Double,
     val targetPlanet: TargetPlanet,
     val scale: Double,

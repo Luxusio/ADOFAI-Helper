@@ -4,8 +4,8 @@ import io.luxus.adofai.lib.property.SpeedType
 import io.luxus.adofai.lib.util.mulOf
 
 @EventType(jsonValue = "SetSpeed", builderClass = SetSpeed.Builder::class, single = false)
-class SetSpeed private constructor(
-    active: Boolean?,
+data class SetSpeed(
+    override val active: Boolean?,
     val speedType: SpeedType,
     val beatsPerMinute: Double,
     val bpmMultiplier: Double,

@@ -2,6 +2,7 @@ package io.luxus.adofai.lib.parser
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
 import io.luxus.adofai.lib.CustomLevel
 import io.luxus.adofai.lib.json.AdofaiJsonInputStream
 import io.luxus.adofai.lib.util.forAllAdofaiFiles
@@ -20,8 +21,9 @@ class CustomLevelWriterTest : BehaviorSpec({
                     ObjectMapper().readTree(AdofaiJsonInputStream(ByteArrayInputStream(outputStream.toByteArray())))
                 }
 
-                Then("it can be read to CustomLevel") {
-                    CustomLevel.read(ByteArrayInputStream(outputStream.toByteArray()))
+                Then("read result should be equal to original customLevel") {
+                    val result = CustomLevel.read(ByteArrayInputStream(outputStream.toByteArray()))
+                    result shouldBe customLevel
                 }
             }
         }

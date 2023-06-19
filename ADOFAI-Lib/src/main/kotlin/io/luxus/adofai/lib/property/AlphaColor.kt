@@ -4,7 +4,7 @@ import io.luxus.adofai.lib.json.JsonParseable
 import io.luxus.adofai.lib.util.HEX_DIGITS
 import io.luxus.adofai.lib.util.requireRange
 
-class AlphaColor private constructor(
+data class AlphaColor(
     val r: Int,
     val g: Int,
     val b: Int,
@@ -12,6 +12,13 @@ class AlphaColor private constructor(
 ) : JsonParseable {
 
     val notNullA: Int = a ?: 255
+
+    init {
+        r.requireRange(0, 255)
+        g.requireRange(0, 255)
+        b.requireRange(0, 255)
+        a?.requireRange(0, 255)
+    }
 
     override val jsonValue: String =
         if (a == null) {

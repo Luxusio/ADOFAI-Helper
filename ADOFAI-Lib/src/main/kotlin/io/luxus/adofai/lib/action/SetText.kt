@@ -1,8 +1,8 @@
 package io.luxus.adofai.lib.action
 
 @EventType(jsonValue = "SetText", builderClass = SetText.Builder::class, single = false)
-class SetText private constructor(
-    active: Boolean?,
+data class SetText(
+    override val active: Boolean?,
     val decText: String,
     val tag: String,
     val angleOffset: Double,

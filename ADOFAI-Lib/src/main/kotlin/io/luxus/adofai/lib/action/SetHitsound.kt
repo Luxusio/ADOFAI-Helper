@@ -4,8 +4,8 @@ import io.luxus.adofai.lib.property.GameSound
 import io.luxus.adofai.lib.property.Hitsound
 
 @EventType(jsonValue = "SetHitsound", builderClass = SetHitsound.Builder::class, single = true)
-class SetHitsound private constructor(
-    active: Boolean?,
+data class SetHitsound(
+    override val active: Boolean?,
     val gameSound: GameSound,
     val hitsound: Hitsound,
     val hitsoundVolume: Long,
