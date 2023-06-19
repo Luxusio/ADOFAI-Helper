@@ -72,7 +72,7 @@ data class AddDecoration(
             private set
         var position: Pair<Double, Double> = Pair(0.0, 0.0)
             private set
-        var relativeTo: DecorationRelativeTo = DecorationRelativeTo.TILE
+        var relativeTo: DecorationRelativeTo = DecorationRelativeTo.GLOBAL
             private set
         var pivotOffset: Pair<Double, Double> = Pair(0.0, 0.0)
             private set
@@ -90,7 +90,7 @@ data class AddDecoration(
             private set
         var opacity: Double = 100.0
             private set
-        var depth: Long = 0L
+        var depth: Long = -1L
             private set
         var parallax: Pair<Double, Double> = Pair(0.0, 0.0)
             private set

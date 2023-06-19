@@ -18,7 +18,7 @@ data class SetText(
 
     class Builder : Action.Builder<Builder>() {
         override val self = this
-        var decText: String = "text"
+        var decText: String = "Text"
             private set
         var tag: String = ""
             private set

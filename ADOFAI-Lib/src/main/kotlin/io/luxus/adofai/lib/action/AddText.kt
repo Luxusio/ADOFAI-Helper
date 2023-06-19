@@ -47,13 +47,13 @@ data class AddText(
 
     class Builder : Decoration.Builder<Builder>() {
         override val self = this
-        var decText: String = "text"
+        var decText: String = "Text"
             private set
         var font: Font = Font.DEFAULT
             private set
         var position: Pair<Double, Double> = Pair(0.0, 0.0)
             private set
-        var relativeTo: DecorationRelativeTo = DecorationRelativeTo.TILE
+        var relativeTo: DecorationRelativeTo = DecorationRelativeTo.GLOBAL
             private set
         var pivotOffset: Pair<Double, Double> = Pair(0.0, 0.0)
             private set
@@ -71,7 +71,7 @@ data class AddText(
             private set
         var depth: Long = -1L
             private set
-        var parallax: Pair<Double, Double> = Pair(-1.0, -1.0)
+        var parallax: Pair<Double, Double> = Pair(0.0, 0.0)
             private set
         var parallaxOffset: Pair<Double, Double> = Pair(0.0, 0.0)
             private set

@@ -34,11 +34,11 @@ data class MoveCamera(
             private set
         var relativeTo: CameraRelativeTo? = CameraRelativeTo.PLAYER
             private set
-        var position: Pair<Double?, Double?>? = Pair(0.0, 0.0)
+        var position: Pair<Double?, Double?>? = Pair(null, null)
             private set
-        var rotation: Double? = 0.0
+        var rotation: Double? = null
             private set
-        var zoom: Double? = 100.0
+        var zoom: Double? = null
             private set
         var angleOffset: Double = 0.0
             private set

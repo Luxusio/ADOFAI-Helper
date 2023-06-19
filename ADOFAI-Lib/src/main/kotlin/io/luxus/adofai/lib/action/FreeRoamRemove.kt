@@ -14,9 +14,9 @@ data class FreeRoamRemove(
 
     class Builder : Action.Builder<Builder>() {
         override val self = this
-        var position: Pair<Double, Double> = Pair(0.0, 0.0)
+        var position: Pair<Double, Double> = Pair(1.0, 0.0)
             private set
-        var size: Pair<Double, Double> = Pair(0.0, 0.0)
+        var size: Pair<Double, Double> = Pair(1.0, 1.0)
             private set
 
         fun position(position: Pair<Double, Double>) = apply { this.position = position }

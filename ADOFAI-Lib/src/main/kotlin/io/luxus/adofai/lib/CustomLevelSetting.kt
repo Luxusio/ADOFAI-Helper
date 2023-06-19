@@ -208,7 +208,7 @@ data class CustomLevelSetting(
             private set
         var bpm: Double = 100.0
             private set
-        var volume: Long = 0
+        var volume: Long = 100L
             private set
         var offset: Long = 0
             private set
@@ -222,9 +222,9 @@ data class CustomLevelSetting(
             private set
         var trackColorType: TrackColorType = TrackColorType.SINGLE
             private set
-        var trackColor: AlphaColor = AlphaColor.Builder().rgba(0x00, 0x3f, 0x52, null).build()
+        var trackColor: AlphaColor = AlphaColor(0xde, 0xbb, 0x7b, null)
             private set
-        var secondaryTrackColor: AlphaColor = AlphaColor.Builder().rgba(0xff, 0xff, 0xff, null).build()
+        var secondaryTrackColor: AlphaColor = AlphaColor(0xff, 0xff, 0xff, null)
             private set
         var trackColorAnimDuration: Double = 2.0
             private set
@@ -278,11 +278,11 @@ data class CustomLevelSetting(
             private set
         var relativeTo: CameraRelativeTo = CameraRelativeTo.PLAYER
             private set
-        var position: Pair<Double, Double> = Pair(100.0, 100.0)
+        var position: Pair<Double, Double> = Pair(0.0, 0.0)
             private set
         var rotation: Double = 0.0
             private set
-        var zoom: Long = 0
+        var zoom: Long = 100L
             private set
         var pulseOnFloor: Toggle = Toggle.ENABLED
             private set
@@ -406,7 +406,9 @@ data class CustomLevelSetting(
         fun stickToFloors(stickToFloors: Toggle) = apply { this.stickToFloors = stickToFloors }
         fun planetEase(planetEase: Ease) = apply { this.planetEase = planetEase }
         fun planetEaseParts(planetEaseParts: Long) = apply { this.planetEaseParts = planetEaseParts }
-        fun planetEasePartBehavior(planetEasePartBehavior: EasePartBehavior) = apply { this.planetEasePartBehavior = planetEasePartBehavior }
+        fun planetEasePartBehavior(planetEasePartBehavior: EasePartBehavior) =
+            apply { this.planetEasePartBehavior = planetEasePartBehavior }
+
         fun customClass(customClass: String) = apply { this.customClass = customClass }
         fun defaultTextColor(defaultTextColor: AlphaColor) = apply { this.defaultTextColor = defaultTextColor }
         fun defaultTextShadowColor(defaultTextShadowColor: AlphaColor) =

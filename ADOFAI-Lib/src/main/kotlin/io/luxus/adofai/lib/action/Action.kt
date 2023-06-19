@@ -64,6 +64,7 @@ abstract class Action protected constructor(
             Twirl::class.java,
         ).associateWith { it.getAnnotation(EventType::class.java) }
 
+        val LEGACY_ACTIONS: Set<Class<out Action>> = setOf(ChangeTrack::class.java)
         val SINGLE_ACTIONS: Set<Class<out Action>> = CLASSES.filter { it.value.single }.map { it.key }.toSet()
     }
 }

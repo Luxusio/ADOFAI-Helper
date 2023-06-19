@@ -43,7 +43,7 @@ data class MoveTrack(
             private set
         var duration = 1.0
             private set
-        var positionOffset: Pair<Double?, Double?>? = Pair(0.0, 0.0)
+        var positionOffset: Pair<Double?, Double?>? = Pair(null, null)
             private set
         var rotationOffset: Double? = null
             private set

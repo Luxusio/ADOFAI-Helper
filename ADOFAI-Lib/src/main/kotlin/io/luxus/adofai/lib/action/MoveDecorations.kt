@@ -55,13 +55,13 @@ data class MoveDecorations(
         override val self = this
         var duration: Double = 1.0
             private set
-        var tag: String = ""
+        var tag: String = "sampleTag"
             private set
         var decorationImage: String? = null
             private set
-        var positionOffset: Pair<Double?, Double?>? = Pair(0.0, 0.0)
+        var positionOffset: Pair<Double?, Double?>? = Pair(null, null)
             private set
-        var pivotOffset: Pair<Double?, Double?>? = Pair(null, null)
+        var pivotOffset: Pair<Double?, Double?>? = null
             private set
         var rotationOffset: Double? = null
             private set
@@ -75,7 +75,7 @@ data class MoveDecorations(
             private set
         var parallax: Pair<Double, Double>? = null
             private set
-        var parallaxOffset: Pair<Double?, Double?>? = null
+        var parallaxOffset: Pair<Double?, Double?>? = Pair(null, null)
             private set
         var angleOffset: Double = 0.0
             private set
