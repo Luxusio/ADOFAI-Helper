@@ -16,7 +16,6 @@ data class CustomBackground(
     val lockRot: Toggle,
     val loopBG: Toggle,
     val scalingRatio: Long,
-    val unscaledSize: Long,
     val angleOffset: Double,
     val eventTag: String,
 ) : Action(CustomBackground::class.java, active) {
@@ -32,7 +31,6 @@ data class CustomBackground(
         .lockRot(lockRot)
         .loopBG(loopBG)
         .scalingRatio(scalingRatio)
-        .unscaledSize(unscaledSize)
         .angleOffset(angleOffset)
         .eventTag(eventTag)
 
@@ -56,8 +54,6 @@ data class CustomBackground(
             private set
         var scalingRatio: Long = 100L
             private set
-        var unscaledSize: Long = 100L
-            private set
         var angleOffset: Double = 0.0
             private set
         var eventTag: String = ""
@@ -72,7 +68,6 @@ data class CustomBackground(
         fun lockRot(lockRot: Toggle) = apply { this.lockRot = lockRot }
         fun loopBG(loopBG: Toggle) = apply { this.loopBG = loopBG }
         fun scalingRatio(scalingRatio: Long) = apply { this.scalingRatio = scalingRatio }
-        fun unscaledSize(unscaledSize: Long) = apply { this.unscaledSize = unscaledSize }
         fun angleOffset(angleOffset: Double) = apply { this.angleOffset = angleOffset }
         fun eventTag(eventTag: String) = apply { this.eventTag = eventTag }
 
@@ -87,7 +82,6 @@ data class CustomBackground(
             lockRot,
             loopBG,
             scalingRatio,
-            unscaledSize,
             angleOffset,
             eventTag,
         )

@@ -133,7 +133,7 @@ class CustomLevelReader(
 
         try {
             val map = jsonNode.toMutableMap().apply {
-                remove("unscaledSize")
+                fixCustomLevelSettingMap(this)
             }
 
             val (rest, exceptions) = jsonNodeBuilderApplier.apply(map, builder)
@@ -144,6 +144,12 @@ class CustomLevelReader(
         }
 
         return Pair(builder, resultExceptions)
+    }
+
+    private fun fixCustomLevelSettingMap(jsonValueMap: MutableMap<String, JsonNode>) {
+        jsonValueMap.remove("unscaledSize")?.let { unscaledSize ->
+            jsonValueMap.computeIfAbsent("scalingRatio") { unscaledSize }
+        }
     }
 
     fun readAction(jsonNode: JsonNode): Pair<Action, List<Exception>> {
@@ -178,6 +184,12 @@ class CustomLevelReader(
         when (eventType) {
             "AutoPlayTiles" -> {
                 jsonValueMap.remove("safetyTiles")
+            }
+
+            "CustomBackground" -> {
+                jsonValueMap.remove("unscaledSize")?.let { unscaledSize ->
+                    jsonValueMap.computeIfAbsent("scalingRatio") { unscaledSize }
+                }
             }
 
             "MoveCamera" -> {

@@ -9,7 +9,7 @@ data class SetFilter(
     override val active: Boolean?,
     val filter: Filter,
     val enabled: Toggle,
-    val intensity: Long,
+    val intensity: Double,
     val duration: Double,
     val ease: Ease,
     val disableOthers: Toggle,
@@ -34,7 +34,7 @@ data class SetFilter(
             private set
         var enabled: Toggle = Toggle.ENABLED
             private set
-        var intensity: Long = 100L
+        var intensity: Double = 100.0
             private set
         var duration: Double = 0.0
             private set
@@ -49,7 +49,7 @@ data class SetFilter(
 
         fun filter(filter: Filter) = apply { this.filter = filter }
         fun enabled(enabled: Toggle) = apply { this.enabled = enabled }
-        fun intensity(intensity: Long) = apply { this.intensity = intensity }
+        fun intensity(intensity: Double) = apply { this.intensity = intensity }
         fun duration(duration: Double) = apply { this.duration = duration }
         fun ease(ease: Ease) = apply { this.ease = ease }
         fun disableOthers(disableOthers: Toggle) = apply { this.disableOthers = disableOthers }

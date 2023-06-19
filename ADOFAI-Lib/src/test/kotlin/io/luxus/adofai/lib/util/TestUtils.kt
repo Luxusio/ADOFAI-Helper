@@ -8,6 +8,12 @@ import java.io.File
 
 private class Foo
 
+fun recentAdofaiFile(): File {
+    return adofaiFiles()
+        .sortedByDescending { it.name.removePrefix("all-r").removeSuffix(".adofai").toLongOrNull() }
+        .first()
+}
+
 fun forAllAdofaiFiles(
     test: (file: File) -> Unit
 ) = forAll(
