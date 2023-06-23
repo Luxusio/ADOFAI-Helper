@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="open_file">파일 열기</string>
+    <string name="save">저장</string>
+    <string name="convert">변환하기</string>
+    <string name="outer_converter">외각 변환기</string>
+</resources>

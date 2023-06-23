@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="open_file">Open file</string>
+    <string name="save">Save</string>
+    <string name="convert">Convert</string>
+    <string name="outer_converter">Outer angle converter</string>
+</resources>
